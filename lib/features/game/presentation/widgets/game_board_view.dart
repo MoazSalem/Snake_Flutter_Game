@@ -7,6 +7,7 @@ import 'game_point.dart';
 class GameBoardView extends StatefulWidget {
   final int width;
   final int height;
+
   const GameBoardView({Key? key, required this.width, required this.height}) : super(key: key);
 
   @override
@@ -27,25 +28,30 @@ class _GameBoardViewState extends State<GameBoardView> {
   @override
   void dispose() {
     super.dispose();
+    c.game = false;
     getIt.unregister<GameCubit>();
   }
 
   @override
   Widget build(BuildContext context) {
-    return Center(
-      child: GridView.builder(
-          padding: const EdgeInsets.symmetric(horizontal: 24.0),
-          itemCount: c.gameBoard.width * c.gameBoard.height,
-          shrinkWrap: true,
-          physics: const NeverScrollableScrollPhysics(),
-          itemBuilder: (BuildContext context, int index) {
-            return Padding(
-                padding: EdgeInsets.all(c.gameBoard.height / c.gameBoard.width),
-                child: GamePoint(gameBoard: c.gameBoard, index: index));
-          },
-          gridDelegate: SliverGridDelegateWithFixedCrossAxisCount(
-            crossAxisCount: c.gameBoard.width,
-          )),
+    return BlocBuilder<GameCubit, GameState>(
+      builder: (context, state) {
+        return Center(
+          child: GridView.builder(
+              padding: const EdgeInsets.symmetric(horizontal: 24.0),
+              itemCount: c.gameBoard.width * c.gameBoard.height,
+              shrinkWrap: true,
+              physics: const NeverScrollableScrollPhysics(),
+              itemBuilder: (BuildContext context, int index) {
+                return Padding(
+                    padding: EdgeInsets.all(c.gameBoard.height / c.gameBoard.width),
+                    child: GamePoint(gameBoard: c.gameBoard, index: index));
+              },
+              gridDelegate: SliverGridDelegateWithFixedCrossAxisCount(
+                crossAxisCount: c.gameBoard.width,
+              )),
+        );
+      },
     );
   }
 }

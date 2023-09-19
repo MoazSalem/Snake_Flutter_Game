@@ -1,11 +1,13 @@
 import 'package:flutter/material.dart';
 import 'package:snake/core/utils/service_locator.dart';
+import '../view_modal/game_cubit/game_cubit.dart';
 
 class Controller extends StatelessWidget {
   const Controller({Key? key}) : super(key: key);
 
   @override
   Widget build(BuildContext context) {
+    GameCubit c = getIt.get<GameCubit>();
     return Padding(
       padding: const EdgeInsets.only(left: 24.0, right: 24.0, bottom: 12.0),
       child: SizedBox(
@@ -15,7 +17,10 @@ class Controller extends StatelessWidget {
             Expanded(
               flex: 2,
               child: ElevatedButton(
-                onPressed: () {},
+                onPressed: () {
+                  c.snake.changeDirection('left');
+                  c.changeControl();
+                },
                 style: ButtonStyle(
                     shape: MaterialStateProperty.all<RoundedRectangleBorder>(RoundedRectangleBorder(
                       borderRadius: BorderRadius.circular(0),
@@ -31,7 +36,10 @@ class Controller extends StatelessWidget {
                 children: [
                   Expanded(
                     child: ElevatedButton(
-                      onPressed: () {},
+                      onPressed: () {
+                        c.snake.changeDirection('up');
+                        c.changeControl();
+                      },
                       style: ButtonStyle(
                           shape: MaterialStateProperty.all<RoundedRectangleBorder>(
                               RoundedRectangleBorder(
@@ -46,14 +54,17 @@ class Controller extends StatelessWidget {
                   ),
                   Expanded(
                     child: ElevatedButton(
-                      onPressed: () {},
+                      onPressed: () {
+                        c.snake.changeDirection('down');
+                        c.changeControl();
+                      },
                       style: ButtonStyle(
                           shape: MaterialStateProperty.all<RoundedRectangleBorder>(
                               RoundedRectangleBorder(
                             borderRadius: BorderRadius.circular(0),
                           )),
                           backgroundColor: MaterialStateProperty.all<Color>(
-                               getIt.get<ColorScheme>().background.withOpacity(0.4)),
+                              getIt.get<ColorScheme>().background.withOpacity(0.4)),
                           minimumSize: MaterialStateProperty.all<Size>(
                               const Size(double.infinity, double.infinity))),
                       child: const Icon(Icons.arrow_downward),
@@ -65,7 +76,10 @@ class Controller extends StatelessWidget {
             Expanded(
               flex: 2,
               child: ElevatedButton(
-                onPressed: () {},
+                onPressed: () {
+                  c.snake.changeDirection('right');
+                  c.changeControl();
+                },
                 style: ButtonStyle(
                     shape: MaterialStateProperty.all<RoundedRectangleBorder>(RoundedRectangleBorder(
                       borderRadius: BorderRadius.circular(0),
