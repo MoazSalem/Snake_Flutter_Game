@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
-import 'package:snake/features/game/presentation/widgets/game_board.dart';
+import 'package:snake/core/models/game_board.dart';
+import 'package:snake/features/game/presentation/widgets/game_board_view.dart';
 import 'controller.dart';
 
 class GameViewBody extends StatefulWidget {
@@ -15,7 +16,7 @@ class _GameViewBodyState extends State<GameViewBody> {
     return const Column(
       children: [
         Expanded(
-          child: GameBoard(),
+          child: GameBoardView(),
         ),
         Controller(),
       ],

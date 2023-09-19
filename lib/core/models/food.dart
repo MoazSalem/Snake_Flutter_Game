@@ -4,6 +4,7 @@ class Food {
   late Point position;
 
   Food({required int boardWidth, required int boardHeight}) {
+    // randomly generate the food's position
     position = generateRandomPosition(boardWidth, boardHeight);
   }
 
