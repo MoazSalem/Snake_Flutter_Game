@@ -1,3 +1,5 @@
+import 'package:snake/core/models/game_board.dart';
+
 import 'point.dart';
 
 class Snake {
@@ -53,7 +55,8 @@ class Snake {
     }
   }
 
-  void checkCollision() {
+  bool checkCollision({required GameBoard gameBoard}) {
     // Check if the snake has collided with itself or the boundaries of the game board
+    return gameBoard.grid[headPoint.yCoordinate][headPoint.xCoordinate] == 2;
   }
 }

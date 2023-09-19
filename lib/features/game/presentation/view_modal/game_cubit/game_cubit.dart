@@ -1,3 +1,4 @@
+import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:snake/core/models/food.dart';
@@ -27,15 +28,16 @@ class GameCubit extends Cubit<GameState> {
     draw();
     // start the game loop
     game = true;
-    emit(GameNextPosition());
+    emit(GameStart());
     // This is the game loop that runs until the game is over
     while (game == true) {
       snake.move(direction: currentDirection);
       food.checkEaten(snake.headPoint) ? {foodEaten(), emit(GameFoodEaten())} : null;
+      snake.checkCollision(gameBoard: gameBoard) ? {game = false, emit(GameOver())} : null;
       draw();
       emit(GameNextPosition());
       // This delay determines the games speed
-      await Future.delayed(const Duration(milliseconds: 800));
+      await Future.delayed(const Duration(milliseconds: 400));
       currentDirection != upcomingDirection ? currentDirection = upcomingDirection : null;
     }
   }
