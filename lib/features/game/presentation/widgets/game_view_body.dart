@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:snake/core/utils/service_locator.dart';
 import 'game_board_view.dart';
 import 'controller.dart';
 
@@ -11,8 +12,8 @@ class GameViewBody extends StatelessWidget {
       children: [
         Expanded(
           child: GameBoardView(
-            width: (MediaQuery.of(context).size.width * 0.036).toInt(),
-            height: ((MediaQuery.of(context).size.width * 0.036) * 1.65).toInt(),
+            width: (getIt.get<Size>().width * 0.036).toInt(),
+            height: ((getIt.get<Size>().width * 0.036) * 1.65).toInt(),
           ),
         ),
         const Controller(),

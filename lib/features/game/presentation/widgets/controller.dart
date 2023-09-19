@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:snake/core/utils/service_locator.dart';
 
 class Controller extends StatelessWidget {
   const Controller({Key? key}) : super(key: key);
@@ -37,7 +38,7 @@ class Controller extends StatelessWidget {
                             borderRadius: BorderRadius.circular(0),
                           )),
                           backgroundColor: MaterialStateProperty.all<Color>(
-                              const Color.fromRGBO(27, 37, 35, 1.0)),
+                              getIt.get<ColorScheme>().background.withOpacity(0.7)),
                           minimumSize: MaterialStateProperty.all<Size>(
                               const Size(double.infinity, double.infinity))),
                       child: const Icon(Icons.arrow_upward),
@@ -52,7 +53,7 @@ class Controller extends StatelessWidget {
                             borderRadius: BorderRadius.circular(0),
                           )),
                           backgroundColor: MaterialStateProperty.all<Color>(
-                              const Color.fromRGBO(27, 37, 35, 0.8)),
+                               getIt.get<ColorScheme>().background.withOpacity(0.4)),
                           minimumSize: MaterialStateProperty.all<Size>(
                               const Size(double.infinity, double.infinity))),
                       child: const Icon(Icons.arrow_downward),

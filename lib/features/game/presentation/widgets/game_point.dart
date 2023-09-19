@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:snake/core/models/game_board.dart';
+import 'package:snake/core/utils/service_locator.dart';
 
 class GamePoint extends StatelessWidget {
   final GameBoard gameBoard;
@@ -19,19 +20,19 @@ Color getColor(int x, int y, GameBoard gameBoard) {
   switch (gameBoard.grid[y][x]) {
     case 1:
       {
-        return Colors.red;
+        return Colors.redAccent;
       }
     case 2:
       {
-        return Colors.teal;
+        return getIt.get<ColorScheme>().secondary;
       }
     case 3:
       {
-        return Colors.tealAccent;
+        return getIt.get<ColorScheme>().primary;
       }
     default:
       {
-        return const Color(0xff1b2523);
+        return getIt.get<ColorScheme>().onSecondary.withOpacity(0.6);
       }
   }
 }

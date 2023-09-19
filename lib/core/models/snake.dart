@@ -7,7 +7,9 @@ class Snake {
   Snake({required int boardWidth, required int boardHeight}) {
     // randomly generate the snake's head and body position
     headPoint = generateRandomPosition(boardWidth, boardHeight);
-    body.add(Point(xCoordinate: headPoint.xCoordinate, yCoordinate: headPoint.yCoordinate + 1));
+    body.add(Point(
+        xCoordinate: headPoint.xCoordinate,
+        yCoordinate: (headPoint.yCoordinate + 1 == boardHeight) ? 0 : headPoint.yCoordinate + 1));
   }
 
   void move() {
