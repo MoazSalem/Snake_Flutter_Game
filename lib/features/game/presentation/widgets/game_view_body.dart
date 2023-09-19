@@ -1,24 +1,21 @@
 import 'package:flutter/material.dart';
-import 'package:snake/core/models/game_board.dart';
-import 'package:snake/features/game/presentation/widgets/game_board_view.dart';
+import 'game_board_view.dart';
 import 'controller.dart';
 
-class GameViewBody extends StatefulWidget {
+class GameViewBody extends StatelessWidget {
   const GameViewBody({Key? key}) : super(key: key);
 
   @override
-  State<GameViewBody> createState() => _GameViewBodyState();
-}
-
-class _GameViewBodyState extends State<GameViewBody> {
-  @override
   Widget build(BuildContext context) {
-    return const Column(
+    return Column(
       children: [
         Expanded(
-          child: GameBoardView(),
+          child: GameBoardView(
+            width: (MediaQuery.of(context).size.width * 0.036).toInt(),
+            height: ((MediaQuery.of(context).size.width * 0.036) * 1.65).toInt(),
+          ),
         ),
-        Controller(),
+        const Controller(),
       ],
     );
   }
