@@ -15,6 +15,8 @@ class GameCubit extends Cubit<GameState> {
   late Snake snake;
   late Food food;
   late bool game;
+  String currentDirection = 'up';
+  String upcomingDirection = 'up';
 
   Future<void> startGame({required int width, required int height}) async {
     // create game board, snake and food
@@ -28,10 +30,11 @@ class GameCubit extends Cubit<GameState> {
     emit(GameNextPosition());
     // This is the game loop that runs until the game is over
     while (game == true) {
-      snake.move();
+      snake.move(direction: currentDirection);
       draw();
       emit(GameNextPosition());
       await Future.delayed(const Duration(seconds: 1));
+      currentDirection != upcomingDirection ? currentDirection = upcomingDirection : null;
     }
   }
 
@@ -46,10 +49,43 @@ class GameCubit extends Cubit<GameState> {
     for (Point point in snake.body) {
       gameBoard.grid[point.yCoordinate][point.xCoordinate] = 2;
     }
-    gameBoard.grid[snake.body[0].yCoordinate][snake.body[0].xCoordinate] = 2;
     // draw food on the board
     gameBoard.grid[food.position.yCoordinate][food.position.xCoordinate] = 1;
     emit(GameNextPosition());
+  }
+
+  void changeDirection(String nextDirection) {
+    // Change the snake's direction with restrictions
+    switch (nextDirection) {
+      case 'up':
+        {
+          if (currentDirection != 'down') {
+            upcomingDirection = nextDirection;
+          }
+          break;
+        }
+      case 'down':
+        {
+          if (currentDirection != 'up') {
+            upcomingDirection = nextDirection;
+          }
+          break;
+        }
+      case 'left':
+        {
+          if (currentDirection != 'right') {
+            upcomingDirection = nextDirection;
+          }
+          break;
+        }
+      case 'right':
+        {
+          if (currentDirection != 'left') {
+            upcomingDirection = nextDirection;
+          }
+          break;
+        }
+    }
   }
 
   void changeControl() {

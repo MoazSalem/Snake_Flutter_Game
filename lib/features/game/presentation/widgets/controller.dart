@@ -18,7 +18,7 @@ class Controller extends StatelessWidget {
               flex: 2,
               child: ElevatedButton(
                 onPressed: () {
-                  c.snake.changeDirection('left');
+                  c.changeDirection('left');
                   c.changeControl();
                 },
                 style: ButtonStyle(
@@ -37,7 +37,7 @@ class Controller extends StatelessWidget {
                   Expanded(
                     child: ElevatedButton(
                       onPressed: () {
-                        c.snake.changeDirection('up');
+                        c.changeDirection('up');
                         c.changeControl();
                       },
                       style: ButtonStyle(
@@ -55,7 +55,7 @@ class Controller extends StatelessWidget {
                   Expanded(
                     child: ElevatedButton(
                       onPressed: () {
-                        c.snake.changeDirection('down');
+                        c.changeDirection('down');
                         c.changeControl();
                       },
                       style: ButtonStyle(
@@ -77,7 +77,7 @@ class Controller extends StatelessWidget {
               flex: 2,
               child: ElevatedButton(
                 onPressed: () {
-                  c.snake.changeDirection('right');
+                  c.changeDirection('right');
                   c.changeControl();
                 },
                 style: ButtonStyle(
