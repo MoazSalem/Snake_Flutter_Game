@@ -31,9 +31,11 @@ class GameCubit extends Cubit<GameState> {
     // This is the game loop that runs until the game is over
     while (game == true) {
       snake.move(direction: currentDirection);
+      food.checkEaten(snake.headPoint) ? {foodEaten(), emit(GameFoodEaten())} : null;
       draw();
       emit(GameNextPosition());
-      await Future.delayed(const Duration(seconds: 1));
+      // This delay determines the games speed
+      await Future.delayed(const Duration(milliseconds: 800));
       currentDirection != upcomingDirection ? currentDirection = upcomingDirection : null;
     }
   }
@@ -52,6 +54,13 @@ class GameCubit extends Cubit<GameState> {
     // draw food on the board
     gameBoard.grid[food.position.yCoordinate][food.position.xCoordinate] = 1;
     emit(GameNextPosition());
+  }
+
+  void foodEaten() {
+    // add a new point to the snake's body
+    snake.body.add(snake.body.last);
+    // generate a new food
+    food = Food(boardWidth: gameBoard.width, boardHeight: gameBoard.height);
   }
 
   void changeDirection(String nextDirection) {

@@ -8,11 +8,8 @@ class Food {
     position = generateRandomPosition(boardWidth, boardHeight);
   }
 
-  void draw() {
-    // Draw the food on the game board
-  }
-
   bool checkEaten(Point snakeHead) {
-    return position == snakeHead;
+    return (position.xCoordinate == snakeHead.xCoordinate &&
+        position.yCoordinate == snakeHead.yCoordinate);
   }
 }
