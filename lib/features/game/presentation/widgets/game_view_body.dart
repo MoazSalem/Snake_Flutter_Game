@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:snake/features/game/presentation/widgets/game_board.dart';
 import 'controller.dart';
 
 class GameViewBody extends StatefulWidget {
@@ -11,12 +12,12 @@ class GameViewBody extends StatefulWidget {
 class _GameViewBodyState extends State<GameViewBody> {
   @override
   Widget build(BuildContext context) {
-    return Column(
+    return const Column(
       children: [
         Expanded(
-          child: Container(),
+          child: GameBoard(),
         ),
-        const Controller(),
+        Controller(),
       ],
     );
   }

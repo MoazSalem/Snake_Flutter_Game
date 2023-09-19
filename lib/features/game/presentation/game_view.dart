@@ -6,6 +6,6 @@ class GameView extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return const Scaffold(body: Center(child: GameViewBody()));
+    return const Scaffold(body: Center(child: SafeArea(child: GameViewBody())));
   }
 }
