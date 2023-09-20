@@ -16,17 +16,19 @@ class GameViewBody extends StatelessWidget {
       listener: (context, state) {
         state is GameOver ? gameOver(context) : null;
       },
-      child: Column(
-        children: [
-          Expanded(
-            child: GameBoardView(
-              width: (getIt.get<Size>().width * 0.036).toInt(),
-              height: ((getIt.get<Size>().width * 0.036) * 1.7).toInt(),
+      child: SafeArea(
+        child: Column(
+          children: [
+            Expanded(
+              child: GameBoardView(
+                width: (getIt.get<Size>().width * 0.036).toInt(),
+                height: ((getIt.get<Size>().width * 0.036) * 1.7).toInt(),
+              ),
             ),
-          ),
-          ScoreWidget(),
-          const Controller(),
-        ],
+            const ScoreWidget(),
+            const Controller(),
+          ],
+        ),
       ),
     );
   }

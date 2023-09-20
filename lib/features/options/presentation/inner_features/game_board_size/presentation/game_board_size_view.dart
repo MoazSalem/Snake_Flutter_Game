@@ -6,8 +6,6 @@ class GameBoardSizeView extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return Scaffold(
-        appBar: AppBar(title: const Text('Game Board Size'), centerTitle: true, toolbarHeight: 70),
-        body: const GameBoardSizeViewBody());
+    return const Scaffold(body: GameBoardSizeViewBody());
   }
 }

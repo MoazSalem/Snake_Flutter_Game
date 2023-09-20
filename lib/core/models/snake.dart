@@ -12,9 +12,6 @@ class Snake {
     body.add(Point(
         xCoordinate: headPoint.xCoordinate,
         yCoordinate: (headPoint.yCoordinate + 1 == boardHeight) ? 0 : headPoint.yCoordinate + 1));
-    body.add(Point(
-        xCoordinate: headPoint.xCoordinate,
-        yCoordinate: (headPoint.yCoordinate + 1 == boardHeight) ? 0 : headPoint.yCoordinate + 2));
   }
 
   void move({required String direction, required GameBoard gameBoard}) {

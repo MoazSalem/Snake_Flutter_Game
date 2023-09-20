@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:snake/core/utils/service_locator.dart';
+import 'package:snake/core/utils/styles.dart';
 import '../view_modal/game_cubit/game_cubit.dart';
 
 class Controller extends StatelessWidget {
@@ -20,12 +21,7 @@ class Controller extends StatelessWidget {
                 onPressed: () {
                   c.changeDirection('left');
                 },
-                style: ButtonStyle(
-                    shape: MaterialStateProperty.all<RoundedRectangleBorder>(RoundedRectangleBorder(
-                      borderRadius: BorderRadius.circular(0),
-                    )),
-                    minimumSize: MaterialStateProperty.all<Size>(
-                        const Size(double.infinity, double.infinity))),
+                style: Styles.flatButton,
                 child: const Icon(Icons.arrow_back_rounded),
               ),
             ),
@@ -38,15 +34,9 @@ class Controller extends StatelessWidget {
                       onPressed: () {
                         c.changeDirection('up');
                       },
-                      style: ButtonStyle(
-                          shape: MaterialStateProperty.all<RoundedRectangleBorder>(
-                              RoundedRectangleBorder(
-                            borderRadius: BorderRadius.circular(0),
-                          )),
+                      style: Styles.flatButton.copyWith(
                           backgroundColor: MaterialStateProperty.all<Color>(
-                              getIt.get<ColorScheme>().background.withOpacity(0.7)),
-                          minimumSize: MaterialStateProperty.all<Size>(
-                              const Size(double.infinity, double.infinity))),
+                              getIt.get<ColorScheme>().background.withOpacity(0.7))),
                       child: const Icon(Icons.arrow_upward),
                     ),
                   ),
@@ -55,15 +45,9 @@ class Controller extends StatelessWidget {
                       onPressed: () {
                         c.changeDirection('down');
                       },
-                      style: ButtonStyle(
-                          shape: MaterialStateProperty.all<RoundedRectangleBorder>(
-                              RoundedRectangleBorder(
-                            borderRadius: BorderRadius.circular(0),
-                          )),
+                      style: Styles.flatButton.copyWith(
                           backgroundColor: MaterialStateProperty.all<Color>(
-                              getIt.get<ColorScheme>().background.withOpacity(0.4)),
-                          minimumSize: MaterialStateProperty.all<Size>(
-                              const Size(double.infinity, double.infinity))),
+                              getIt.get<ColorScheme>().background.withOpacity(0.4))),
                       child: const Icon(Icons.arrow_downward),
                     ),
                   ),
@@ -76,12 +60,7 @@ class Controller extends StatelessWidget {
                 onPressed: () {
                   c.changeDirection('right');
                 },
-                style: ButtonStyle(
-                    shape: MaterialStateProperty.all<RoundedRectangleBorder>(RoundedRectangleBorder(
-                      borderRadius: BorderRadius.circular(0),
-                    )),
-                    minimumSize: MaterialStateProperty.all<Size>(
-                        const Size(double.infinity, double.infinity))),
+                style: Styles.flatButton,
                 child: const Icon(Icons.arrow_forward_rounded),
               ),
             ),
