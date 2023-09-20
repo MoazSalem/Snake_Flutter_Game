@@ -1,7 +1,20 @@
 import 'package:flutter/material.dart';
+import 'package:snake/core/utils/service_locator.dart';
+import 'package:snake/features/options/presentation/view_modal/options_cubit/options_cubit.dart';
 
-class HomeViewBody extends StatelessWidget {
+class HomeViewBody extends StatefulWidget {
   const HomeViewBody({Key? key}) : super(key: key);
+
+  @override
+  State<HomeViewBody> createState() => _HomeViewBodyState();
+}
+
+class _HomeViewBodyState extends State<HomeViewBody> {
+  @override
+  void initState() {
+    super.initState();
+    getIt.registerSingleton<OptionsCubit>(OptionsCubit.get(context));
+  }
 
   @override
   Widget build(BuildContext context) {
