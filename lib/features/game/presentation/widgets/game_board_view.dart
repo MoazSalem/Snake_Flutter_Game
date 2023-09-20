@@ -1,14 +1,12 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:hive/hive.dart';
 import 'package:snake/core/utils/service_locator.dart';
 import 'package:snake/features/game/presentation/view_modal/game_cubit/game_cubit.dart';
 import 'game_point.dart';
 
 class GameBoardView extends StatefulWidget {
-  final int width;
-  final int height;
-
-  const GameBoardView({Key? key, required this.width, required this.height}) : super(key: key);
+  const GameBoardView({Key? key}) : super(key: key);
 
   @override
   State<GameBoardView> createState() => _GameBoardViewState();
@@ -16,11 +14,13 @@ class GameBoardView extends StatefulWidget {
 
 class _GameBoardViewState extends State<GameBoardView> {
   late GameCubit c;
+  int width = getIt.get<Box>().get('boardWidth');
+  int height = getIt.get<Box>().get('boardHeight');
 
   @override
   void initState() {
     super.initState();
-    BlocProvider.of<GameCubit>(context).startGame(width: widget.width, height: widget.height);
+    BlocProvider.of<GameCubit>(context).startGame(width: width, height: height);
     getIt.registerSingleton<GameCubit>(GameCubit.get(context));
     c = getIt.get<GameCubit>();
   }

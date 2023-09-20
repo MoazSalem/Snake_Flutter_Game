@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:hive/hive.dart';
 import 'package:snake/core/utils/service_locator.dart';
 import 'package:snake/core/utils/styles.dart';
 import '../view_modal/game_cubit/game_cubit.dart';
@@ -8,6 +9,7 @@ class Controller extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    final int style = getIt.get<Box>().get('controllerStyle');
     GameCubit c = getIt.get<GameCubit>();
     return Padding(
       padding: const EdgeInsets.only(left: 24.0, right: 24.0, bottom: 24.0, top: 6.0),
@@ -16,7 +18,7 @@ class Controller extends StatelessWidget {
         child: Row(
           children: [
             Expanded(
-              flex: 2,
+              flex: style == 2 ? 1 : 2,
               child: ElevatedButton(
                 onPressed: () {
                   c.changeDirection('left');
@@ -25,37 +27,54 @@ class Controller extends StatelessWidget {
                 child: const Icon(Icons.arrow_back_rounded),
               ),
             ),
-            Expanded(
-              flex: 3,
-              child: Column(
-                children: [
-                  Expanded(
+            style == 2
+                ? Expanded(
                     child: ElevatedButton(
-                      onPressed: () {
-                        c.changeDirection('up');
-                      },
+                      onPressed: () => c.changeDirection('up'),
                       style: Styles.flatButton.copyWith(
                           backgroundColor: MaterialStateProperty.all<Color>(
                               getIt.get<ColorScheme>().background.withOpacity(0.7))),
                       child: const Icon(Icons.arrow_upward),
                     ),
+                  )
+                : Expanded(
+                    flex: 3,
+                    child: Column(
+                      children: [
+                        Expanded(
+                          child: ElevatedButton(
+                            onPressed: () => c.changeDirection('up'),
+                            style: Styles.flatButton.copyWith(
+                                backgroundColor: MaterialStateProperty.all<Color>(
+                                    getIt.get<ColorScheme>().background.withOpacity(0.7))),
+                            child: const Icon(Icons.arrow_upward),
+                          ),
+                        ),
+                        Expanded(
+                          child: ElevatedButton(
+                            onPressed: () => c.changeDirection('down'),
+                            style: Styles.flatButton.copyWith(
+                                backgroundColor: MaterialStateProperty.all<Color>(
+                                    getIt.get<ColorScheme>().background.withOpacity(0.4))),
+                            child: const Icon(Icons.arrow_downward),
+                          ),
+                        ),
+                      ],
+                    ),
                   ),
-                  Expanded(
+            style == 2
+                ? Expanded(
                     child: ElevatedButton(
-                      onPressed: () {
-                        c.changeDirection('down');
-                      },
+                      onPressed: () => c.changeDirection('down'),
                       style: Styles.flatButton.copyWith(
                           backgroundColor: MaterialStateProperty.all<Color>(
                               getIt.get<ColorScheme>().background.withOpacity(0.4))),
                       child: const Icon(Icons.arrow_downward),
                     ),
-                  ),
-                ],
-              ),
-            ),
+                  )
+                : Container(),
             Expanded(
-              flex: 2,
+              flex: style == 2 ? 1 : 2,
               child: ElevatedButton(
                 onPressed: () {
                   c.changeDirection('right');
