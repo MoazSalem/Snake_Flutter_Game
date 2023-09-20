@@ -9,7 +9,7 @@ class Controller extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    final int style = getIt.get<Box>().get('controllerStyle');
+    final int style = getIt.get<Box>().get('controllerStyle', defaultValue:  1);
     GameCubit c = getIt.get<GameCubit>();
     return Padding(
       padding: const EdgeInsets.only(left: 24.0, right: 24.0, bottom: 24.0, top: 6.0),

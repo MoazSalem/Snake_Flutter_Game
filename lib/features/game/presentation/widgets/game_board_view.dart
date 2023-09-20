@@ -14,8 +14,11 @@ class GameBoardView extends StatefulWidget {
 
 class _GameBoardViewState extends State<GameBoardView> {
   late GameCubit c;
-  int width = getIt.get<Box>().get('boardWidth');
-  int height = getIt.get<Box>().get('boardHeight');
+  int width =
+      getIt.get<Box>().get('boardWidth', defaultValue: (getIt.get<Size>().width * 0.036).toInt());
+  int height = getIt
+      .get<Box>()
+      .get('boardHeight', defaultValue: ((getIt.get<Size>().width * 0.036) * 1.7).toInt());
 
   @override
   void initState() {
