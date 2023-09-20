@@ -8,8 +8,8 @@ class OptionsViewBody extends StatelessWidget {
   Widget build(BuildContext context) {
     return ListView(
       children: const [
-        OptionsTile(title: "Game Board Size", goTo: "GameBoardSize"),
-        OptionsTile(title: 'Game Controller Style', goTo: "GameControllerStyle"),
+        OptionsTile(title: "Game Board Size", goTo: "/GameBoardSize"),
+        OptionsTile(title: 'Game Controller Style', goTo: "/GameControllerStyle"),
       ],
     );
   }
