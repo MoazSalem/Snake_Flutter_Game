@@ -14,7 +14,7 @@ class HomeViewBody extends StatelessWidget {
           SizedBox(
               height: 80,
               child: ElevatedButton(
-                  onPressed: () => Navigator.pushNamed(context, '/game'),
+                  onPressed: () => Navigator.pushNamed(context, '/difficulty'),
                   child: const Text('Start Game'))),
           const SizedBox(height: 16),
           SizedBox(

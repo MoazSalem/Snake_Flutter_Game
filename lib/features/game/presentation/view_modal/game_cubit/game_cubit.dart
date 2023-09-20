@@ -5,6 +5,7 @@ import 'package:snake/core/models/food.dart';
 import 'package:snake/core/models/game_board.dart';
 import 'package:snake/core/models/point.dart';
 import 'package:snake/core/models/snake.dart';
+import 'package:snake/features/constants.dart';
 
 part 'game_state.dart';
 
@@ -16,8 +17,13 @@ class GameCubit extends Cubit<GameState> {
   late Snake snake;
   late Food food;
   late bool game;
+  late Duration difficulty;
   String currentDirection = 'up';
   String upcomingDirection = 'up';
+
+  setDifficulty({required int difficultyType}) {
+    difficulty = Duration(milliseconds: kGameDifficultySpeeds[difficultyType]);
+  }
 
   Future<void> startGame({required int width, required int height}) async {
     // create game board, snake and food
@@ -37,7 +43,7 @@ class GameCubit extends Cubit<GameState> {
       draw();
       emit(GameNextPosition());
       // This delay determines the games speed
-      await Future.delayed(const Duration(milliseconds: 400));
+      await Future.delayed(difficulty);
       currentDirection != upcomingDirection ? currentDirection = upcomingDirection : null;
     }
   }
@@ -97,9 +103,6 @@ class GameCubit extends Cubit<GameState> {
           break;
         }
     }
-  }
-
-  void changeControl() {
     emit(GameChangeControl());
   }
 }

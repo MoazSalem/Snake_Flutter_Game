@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:snake/features/difficulty/presentation/difficulty_view.dart';
 import 'package:snake/features/game/presentation/game_view.dart';
 import 'package:snake/features/home/presentation/home_view.dart';
 import 'package:snake/features/options/presentation/options_view.dart';
@@ -25,6 +26,7 @@ class MyApp extends StatelessWidget {
         routes: {
           '/': (context) => const SplashView(),
           '/home': (context) => const HomeView(),
+          '/difficulty': (context) => const DifficultyView(),
           '/game': (context) => const GameView(),
           '/options': (context) => const OptionsView(),
         });

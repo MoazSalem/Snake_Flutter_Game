@@ -19,7 +19,6 @@ class Controller extends StatelessWidget {
               child: ElevatedButton(
                 onPressed: () {
                   c.changeDirection('left');
-                  c.changeControl();
                 },
                 style: ButtonStyle(
                     shape: MaterialStateProperty.all<RoundedRectangleBorder>(RoundedRectangleBorder(
@@ -38,7 +37,6 @@ class Controller extends StatelessWidget {
                     child: ElevatedButton(
                       onPressed: () {
                         c.changeDirection('up');
-                        c.changeControl();
                       },
                       style: ButtonStyle(
                           shape: MaterialStateProperty.all<RoundedRectangleBorder>(
@@ -56,7 +54,6 @@ class Controller extends StatelessWidget {
                     child: ElevatedButton(
                       onPressed: () {
                         c.changeDirection('down');
-                        c.changeControl();
                       },
                       style: ButtonStyle(
                           shape: MaterialStateProperty.all<RoundedRectangleBorder>(
@@ -78,7 +75,6 @@ class Controller extends StatelessWidget {
               child: ElevatedButton(
                 onPressed: () {
                   c.changeDirection('right');
-                  c.changeControl();
                 },
                 style: ButtonStyle(
                     shape: MaterialStateProperty.all<RoundedRectangleBorder>(RoundedRectangleBorder(
