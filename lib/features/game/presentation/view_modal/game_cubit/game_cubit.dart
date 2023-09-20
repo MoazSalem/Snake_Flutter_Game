@@ -17,12 +17,15 @@ class GameCubit extends Cubit<GameState> {
   late Snake snake;
   late Food food;
   late bool game;
-  late Duration difficulty;
+  late int score;
+  late int difficultyIndex;
+  late Duration difficultyDuration;
   String currentDirection = 'up';
   String upcomingDirection = 'up';
 
   setDifficulty({required int difficultyType}) {
-    difficulty = Duration(milliseconds: kGameDifficultySpeeds[difficultyType]);
+    difficultyIndex = difficultyType;
+    difficultyDuration = Duration(milliseconds: kGameDifficultySpeeds[difficultyType]);
   }
 
   Future<void> startGame({required int width, required int height}) async {
@@ -30,6 +33,7 @@ class GameCubit extends Cubit<GameState> {
     gameBoard = GameBoard(width: width, height: height);
     snake = Snake(boardHeight: gameBoard.height, boardWidth: gameBoard.width);
     food = Food(boardWidth: gameBoard.width, boardHeight: gameBoard.height);
+    score = 0;
     // put snake head and body on the board
     draw();
     // start the game loop
@@ -43,7 +47,7 @@ class GameCubit extends Cubit<GameState> {
       draw();
       emit(GameNextPosition());
       // This delay determines the games speed
-      await Future.delayed(difficulty);
+      await Future.delayed(difficultyDuration);
       currentDirection != upcomingDirection ? currentDirection = upcomingDirection : null;
     }
   }
@@ -69,6 +73,8 @@ class GameCubit extends Cubit<GameState> {
     snake.body.add(snake.body.last);
     // generate a new food
     food = Food(boardWidth: gameBoard.width, boardHeight: gameBoard.height);
+    // increase the score
+    score += (80 + difficultyIndex * 40);
   }
 
   void changeDirection(String nextDirection) {
