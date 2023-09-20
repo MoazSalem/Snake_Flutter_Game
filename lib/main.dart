@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:snake/features/difficulty/presentation/difficulty_view.dart';
 import 'package:snake/features/game/presentation/game_view.dart';
 import 'package:snake/features/home/presentation/home_view.dart';
+import 'package:snake/features/leaderboard/presentation/leaderboard_view.dart';
 import 'package:snake/features/options/presentation/options_view.dart';
 import 'package:snake/features/splash/presentation/splash_view.dart';
 
@@ -28,6 +29,7 @@ class MyApp extends StatelessWidget {
           '/home': (context) => const HomeView(),
           '/difficulty': (context) => const DifficultyView(),
           '/game': (context) => const GameView(),
+          '/leaderboard': (context) => const LeaderboardView(),
           '/options': (context) => const OptionsView(),
         });
   }

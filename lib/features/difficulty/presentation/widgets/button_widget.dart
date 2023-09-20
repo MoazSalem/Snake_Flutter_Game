@@ -13,10 +13,14 @@ class ButtonWidget extends StatelessWidget {
       padding: const EdgeInsets.all(8.0),
       child: SizedBox(
           height: 60,
+          width: 240,
           child: ElevatedButton(
               onPressed: () => Navigator.pushNamed(context, '/game',
                   arguments: ScreenArguments(difficultyType: difficultyType)),
-              child: Text(text))),
+              child: Text(
+                text,
+                style: const TextStyle(fontSize: 18),
+              ))),
     );
   }
 }
