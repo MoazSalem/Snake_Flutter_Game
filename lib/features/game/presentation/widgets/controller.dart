@@ -9,9 +9,9 @@ class Controller extends StatelessWidget {
   Widget build(BuildContext context) {
     GameCubit c = getIt.get<GameCubit>();
     return Padding(
-      padding: const EdgeInsets.only(left: 24.0, right: 24.0, bottom: 12.0, top: 6.0),
+      padding: const EdgeInsets.only(left: 24.0, right: 24.0, bottom: 24.0, top: 6.0),
       child: SizedBox(
-        height: MediaQuery.sizeOf(context).height * 0.2,
+        height: MediaQuery.sizeOf(context).height * 0.15,
         child: Row(
           children: [
             Expanded(

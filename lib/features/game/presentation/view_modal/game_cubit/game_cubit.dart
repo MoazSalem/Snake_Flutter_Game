@@ -1,3 +1,4 @@
+import 'package:audioplayers/audioplayers.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter/cupertino.dart';
@@ -5,6 +6,7 @@ import 'package:snake/core/models/food.dart';
 import 'package:snake/core/models/game_board.dart';
 import 'package:snake/core/models/point.dart';
 import 'package:snake/core/models/snake.dart';
+import 'package:snake/core/utils/assets.dart';
 import 'package:snake/features/constants.dart';
 
 part 'game_state.dart';
@@ -69,6 +71,8 @@ class GameCubit extends Cubit<GameState> {
   }
 
   void foodEaten() {
+    // play eat food sound
+    AudioPlayer().play(AssetSource(AssetsData.eatAudio));
     // add a new point to the snake's body
     snake.body.add(snake.body.last);
     // generate a new food

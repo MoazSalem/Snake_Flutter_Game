@@ -21,7 +21,7 @@ class GameViewBody extends StatelessWidget {
           Expanded(
             child: GameBoardView(
               width: (getIt.get<Size>().width * 0.036).toInt(),
-              height: ((getIt.get<Size>().width * 0.036) * 1.65).toInt(),
+              height: ((getIt.get<Size>().width * 0.036) * 1.7).toInt(),
             ),
           ),
           ScoreWidget(),
