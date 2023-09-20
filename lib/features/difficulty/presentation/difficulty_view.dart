@@ -6,8 +6,9 @@ class DifficultyView extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return const Scaffold(
-      body: DifficultyViewBody(),
+    return Scaffold(
+      appBar: AppBar(title: const Text('Difficulty'), centerTitle: true, toolbarHeight: 70),
+      body: const DifficultyViewBody(),
     );
   }
 }
