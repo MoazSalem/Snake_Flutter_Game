@@ -41,7 +41,7 @@ class GameCubit extends Cubit<GameState> {
     emit(GameStart());
     // This is the game loop that runs until the game is over
     while (game == true) {
-      snake.move(direction: currentDirection);
+      snake.move(direction: currentDirection, gameBoard: gameBoard);
       food.checkEaten(snake.headPoint) ? {foodEaten(), emit(GameFoodEaten())} : null;
       snake.checkCollision(gameBoard: gameBoard) ? {game = false, emit(GameOver())} : null;
       draw();
