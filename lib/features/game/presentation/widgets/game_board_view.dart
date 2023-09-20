@@ -36,21 +36,19 @@ class _GameBoardViewState extends State<GameBoardView> {
   Widget build(BuildContext context) {
     return BlocBuilder<GameCubit, GameState>(
       builder: (context, state) {
-        return Center(
-          child: GridView.builder(
-              padding: const EdgeInsets.symmetric(horizontal: 24.0),
-              itemCount: c.gameBoard.width * c.gameBoard.height,
-              shrinkWrap: true,
-              physics: const NeverScrollableScrollPhysics(),
-              itemBuilder: (BuildContext context, int index) {
-                return Padding(
-                    padding: EdgeInsets.all(c.gameBoard.height / c.gameBoard.width),
-                    child: GamePoint(gameBoard: c.gameBoard, index: index));
-              },
-              gridDelegate: SliverGridDelegateWithFixedCrossAxisCount(
-                crossAxisCount: c.gameBoard.width,
-              )),
-        );
+        return GridView.builder(
+            padding: const EdgeInsets.symmetric(horizontal: 24.0, vertical: 12.0),
+            itemCount: c.gameBoard.width * c.gameBoard.height,
+            shrinkWrap: true,
+            physics: const NeverScrollableScrollPhysics(),
+            itemBuilder: (BuildContext context, int index) {
+              return Padding(
+                  padding: EdgeInsets.all(c.gameBoard.height / c.gameBoard.width),
+                  child: GamePoint(gameBoard: c.gameBoard, index: index));
+            },
+            gridDelegate: SliverGridDelegateWithFixedCrossAxisCount(
+              crossAxisCount: c.gameBoard.width,
+            ));
       },
     );
   }
