@@ -55,7 +55,10 @@ class _LeaderboardViewBodyState extends State<LeaderboardViewBody> with TickerPr
               ],
             ),
           ),
-          Hive.box('leaderBoardBox').get("${kDifficultyNames[_controller.index]}List") != null
+          (Hive.box('leaderBoardBox').get("${kDifficultyNames[_controller.index]}List") != null &&
+                  Hive.box('leaderBoardBox')
+                      .get("${kDifficultyNames[_controller.index]}List")
+                      .isNotEmpty)
               ? ListView.builder(
                   shrinkWrap: true,
                   itemCount: Hive.box('leaderBoardBox')

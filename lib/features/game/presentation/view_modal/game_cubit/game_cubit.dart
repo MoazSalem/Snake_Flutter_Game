@@ -1,4 +1,6 @@
 import 'package:audioplayers/audioplayers.dart';
+import 'package:cloud_firestore/cloud_firestore.dart';
+import 'package:connectivity_plus/connectivity_plus.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter/cupertino.dart';
@@ -119,7 +121,12 @@ class GameCubit extends Cubit<GameState> {
   }
 
   // Add the score to the offline leaderboard
-  void addToLeaderboard({required LeaderboardItem newItem}) {
+  Future<void> addToLeaderboard({required LeaderboardItem newItem}) async {
+    // check if there is internet connection and upload the score to firebase if there is
+    final connectivityResult = await (Connectivity().checkConnectivity());
+    if (connectivityResult != ConnectivityResult.none) {
+      newItem = await uploadToFirebaseLeaderBoard(item: newItem);
+    }
     late List list;
     // get the correct leaderboard for the difficulty
     list = Hive.box('leaderBoardBox')
@@ -139,6 +146,22 @@ class GameCubit extends Cubit<GameState> {
     }
     // add the score to the leaderboard
     Hive.box('leaderBoardBox').put('${newItem.difficulty}List', list);
-    emit(GameAddLeaderboard());
+  }
+
+  Future<LeaderboardItem> uploadToFirebaseLeaderBoard({required LeaderboardItem item}) async {
+    try {
+      await FirebaseFirestore.instance.collection("${item.difficulty}List").add({
+        'name': item.name,
+        'difficulty': item.difficulty,
+        'score': item.score,
+        'width': item.width,
+        'height': item.height,
+      });
+      item.uploaded = 1;
+    } catch (e) {
+      item.uploaded = 0;
+      debugPrint(e.toString());
+    }
+    return item;
   }
 }
