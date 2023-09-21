@@ -84,7 +84,7 @@ class GameCubit extends Cubit<GameState> {
     // generate a new food
     generateFood();
     // increase the score
-    score += (80 + difficultyIndex * 40);
+    score += (4 + difficultyIndex * 4);
   }
 
   generateFood() {
