@@ -77,12 +77,36 @@ class GameCubit extends Cubit<GameState> {
   void foodEaten() {
     // play eat food sound
     AudioPlayer().play(AssetSource(AssetsData.eatAudio));
+    // not sure if this is necessary
+    AudioPlayer().dispose();
     // add a new point to the snake's body
     snake.body.add(snake.body.last);
     // generate a new food
-    food = Food(boardWidth: gameBoard.width, boardHeight: gameBoard.height);
+    generateFood();
     // increase the score
     score += (80 + difficultyIndex * 40);
+  }
+
+  generateFood() {
+    // generate new food
+    Food tempFood = Food(boardWidth: gameBoard.width, boardHeight: gameBoard.height);
+    switch (gameBoard.grid[tempFood.position.yCoordinate][tempFood.position.xCoordinate]) {
+      case 0:
+        {
+          food = tempFood;
+          break;
+        }
+      case 2:
+        {
+          generateFood();
+          break;
+        }
+      case 3:
+        {
+          generateFood();
+          break;
+        }
+    }
   }
 
   void changeDirection(String nextDirection) {
