@@ -3,7 +3,8 @@ import 'package:snake/core/models/leaderboard_item.dart';
 
 class LeaderboardTile extends StatelessWidget {
   final LeaderboardItem item;
-  const LeaderboardTile({Key? key, required this.item}) : super(key: key);
+  final int position;
+  const LeaderboardTile({Key? key, required this.item, required this.position}) : super(key: key);
 
   @override
   Widget build(BuildContext context) {
@@ -12,7 +13,7 @@ class LeaderboardTile extends StatelessWidget {
         horizontalTitleGap: 20,
         minVerticalPadding: 20,
         leading: Text(
-          item.position.toString(),
+          position.toString(),
           style: const TextStyle(fontSize: 26, color: Colors.white),
         ),
         title: Text(
@@ -25,7 +26,7 @@ class LeaderboardTile extends StatelessWidget {
           item.score.toString(),
           style: TextStyle(
               fontSize: 26,
-              color: (item.position == 1 || item.position == 2 || item.position == 3)
+              color: (position == 1 || position == 2 || position == 3)
                   ? Theme.of(context).colorScheme.primary
                   : Theme.of(context).colorScheme.onBackground),
         ),

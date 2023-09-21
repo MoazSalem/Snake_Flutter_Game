@@ -2,7 +2,6 @@ import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:snake/core/models/game_board.dart';
 import 'package:snake/core/utils/service_locator.dart';
-import 'package:snake/features/game/presentation/widgets/game_point.dart';
 import 'package:snake/features/options/presentation/view_modal/options_cubit/options_cubit.dart';
 
 class GameBoardWidget extends StatelessWidget {

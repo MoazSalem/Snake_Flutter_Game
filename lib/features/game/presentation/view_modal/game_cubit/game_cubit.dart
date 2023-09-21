@@ -9,7 +9,6 @@ import 'package:snake/core/models/leaderboard_item.dart';
 import 'package:snake/core/models/point.dart';
 import 'package:snake/core/models/snake.dart';
 import 'package:snake/core/utils/assets.dart';
-import 'package:snake/core/utils/service_locator.dart';
 import 'package:snake/features/constants.dart';
 
 part 'game_state.dart';
@@ -27,7 +26,6 @@ class GameCubit extends Cubit<GameState> {
   late Duration difficultyDuration;
   String currentDirection = 'up';
   String upcomingDirection = 'up';
-  List<String> difficultyNames = ['Easy', 'Normal', 'Hard', 'VeryHard', 'Insane'];
 
   setDifficulty({required int difficultyType}) {
     difficultyIndex = difficultyType;
@@ -122,9 +120,9 @@ class GameCubit extends Cubit<GameState> {
 
   // Add the score to the offline leaderboard
   void addToLeaderboard({required LeaderboardItem newItem}) {
-    late List<LeaderboardItem> list;
+    late List list;
     // get the correct leaderboard for the difficulty
-    list = Hive.box<List<LeaderboardItem>>('leaderBoardBox')
+    list = Hive.box('leaderBoardBox')
         .get('${newItem.difficulty}List', defaultValue: <LeaderboardItem>[])!;
     // add the new item to the leaderboard
     int index = list.indexWhere((item) => item.score < newItem.score);
@@ -140,7 +138,7 @@ class GameCubit extends Cubit<GameState> {
       list.removeLast();
     }
     // add the score to the leaderboard
-    Hive.box<List<LeaderboardItem>>('leaderBoardBox').put('${newItem.difficulty}List', list);
+    Hive.box('leaderBoardBox').put('${newItem.difficulty}List', list);
     emit(GameAddLeaderboard());
   }
 }

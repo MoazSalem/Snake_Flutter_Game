@@ -4,7 +4,8 @@ import 'package:audioplayers/audioplayers.dart';
 import 'package:snake/core/models/leaderboard_item.dart';
 import 'package:snake/core/utils/assets.dart';
 import 'package:snake/core/utils/service_locator.dart';
-import 'package:snake/features/game/presentation/view_modal/game_cubit/game_cubit.dart';
+import 'package:snake/features/constants.dart';
+import '../view_modal/game_cubit/game_cubit.dart';
 
 TextEditingController _controller = TextEditingController();
 gameOver(BuildContext context) {
@@ -59,9 +60,7 @@ saveScore(BuildContext context) {
                   getIt.get<GameCubit>().addToLeaderboard(
                       newItem: LeaderboardItem(
                           name: _controller.text,
-                          difficulty: getIt
-                              .get<GameCubit>()
-                              .difficultyNames[getIt.get<GameCubit>().difficultyIndex],
+                          difficulty: kDifficultyNames[getIt.get<GameCubit>().difficultyIndex],
                           score: getIt.get<GameCubit>().score,
                           width: Hive.box('optionsBox').get('boardWidth',
                               defaultValue: (getIt.get<Size>().width * 0.036).toInt()),

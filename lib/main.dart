@@ -10,7 +10,7 @@ void main() async {
   await Hive.initFlutter();
   Hive.registerAdapter<LeaderboardItem>(LeaderboardItemAdapter());
   await Hive.openBox('optionsBox');
-  await Hive.openBox<List<LeaderboardItem>>('leaderBoardBox');
+  await Hive.openBox('leaderBoardBox');
   runApp(const MyApp());
 }
 
