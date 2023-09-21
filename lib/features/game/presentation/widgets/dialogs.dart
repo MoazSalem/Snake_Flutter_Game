@@ -12,6 +12,7 @@ gameOver(BuildContext context) {
   // play game over sound
   AudioPlayer().play(AssetSource(AssetsData.gameoverAudio));
   showDialog(
+      barrierDismissible: false,
       context: context,
       builder: (context) {
         return AlertDialog(
@@ -43,6 +44,7 @@ gameOver(BuildContext context) {
 
 saveScore(BuildContext context) {
   showDialog(
+      barrierDismissible: false,
       context: context,
       builder: (context) {
         return AlertDialog(
