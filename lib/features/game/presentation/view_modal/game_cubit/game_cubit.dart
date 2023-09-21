@@ -2,11 +2,14 @@ import 'package:audioplayers/audioplayers.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter/cupertino.dart';
+import 'package:hive/hive.dart';
 import 'package:snake/core/models/food.dart';
 import 'package:snake/core/models/game_board.dart';
+import 'package:snake/core/models/leaderboard_item.dart';
 import 'package:snake/core/models/point.dart';
 import 'package:snake/core/models/snake.dart';
 import 'package:snake/core/utils/assets.dart';
+import 'package:snake/core/utils/service_locator.dart';
 import 'package:snake/features/constants.dart';
 
 part 'game_state.dart';
@@ -114,5 +117,30 @@ class GameCubit extends Cubit<GameState> {
         }
     }
     emit(GameChangeControl());
+  }
+
+  // Add the score to the offline leaderboard
+  void addToLeaderboard({required LeaderboardItem newItem}) {
+    late List<LeaderboardItem> list;
+    // get the correct leaderboard for the difficulty
+    list = getIt
+        .get<Box>(instanceName: 'Leaderboard')
+        .get('${newItem.difficulty}List', defaultValue: <LeaderboardItem>[]);
+    // add the new item to the leaderboard
+    int index = list.indexWhere((item) => item.score < newItem.score);
+    // If the new item has the lowest score, add it at the end.
+    if (index == -1) {
+      list.add(newItem);
+    } else {
+      // Insert the new item at the correct position to maintain the order.
+      list.insert(index, newItem);
+    }
+    // If the leaderboard has more than 100 items, remove the last item.
+    if (list.length > 100) {
+      list.removeLast();
+    }
+    // add the score to the leaderboard
+    getIt.get<Box>(instanceName: 'Leaderboard').put('${newItem.difficulty}List', list);
+    emit(GameAddLeaderboard());
   }
 }

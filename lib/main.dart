@@ -11,7 +11,8 @@ void main() async {
   await Hive.initFlutter();
   Hive.registerAdapter(LeaderboardItemAdapter());
   getIt.registerSingleton<Box>(await Hive.openBox('optionsBox'));
-  getIt.registerSingleton<Box>(await Hive.openBox<List<LeaderboardItem>>('leaderBoardBox'));
+  getIt.registerSingleton<Box>(await Hive.openBox<List<LeaderboardItem>>('leaderBoardBox'),
+      instanceName: 'Leaderboard');
   runApp(const MyApp());
 }
 

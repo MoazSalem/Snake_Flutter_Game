@@ -16,3 +16,5 @@ class GameFoodEaten extends GameState {}
 class GameOver extends GameState {}
 
 class GameWon extends GameState {}
+
+class GameAddLeaderboard extends GameState {}
