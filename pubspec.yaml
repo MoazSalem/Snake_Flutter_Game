@@ -42,6 +42,8 @@ dependencies:
   animated_segmented_tab_control: ^1.2.0
   hive: ^2.2.3
   hive_flutter: ^1.1.0
+  firebase_core: ^2.16.0
+  cloud_firestore: ^4.9.2
 
 dev_dependencies:
   flutter_test:

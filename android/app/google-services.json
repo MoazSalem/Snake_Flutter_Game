@@ -1,0 +1,29 @@
+{
+  "project_info": {
+    "project_number": "787644977621",
+    "project_id": "snake-flutttergame",
+    "storage_bucket": "snake-flutttergame.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:787644977621:android:72006c061ded4d3a64ad5c",
+        "android_client_info": {
+          "package_name": "com.moazsalem.snake"
+        }
+      },
+      "oauth_client": [],
+      "api_key": [
+        {
+          "current_key": "AIzaSyCYO8N91C4_gpwDp1bjI2sGi5ZyS7tWcPQ"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": []
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}

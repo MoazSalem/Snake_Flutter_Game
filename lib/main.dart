@@ -1,6 +1,8 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:hive_flutter/adapters.dart';
+import 'package:firebase_core/firebase_core.dart';
+import 'firebase_options.dart';
 import 'package:snake/core/models/leaderboard_item.dart';
 import 'package:snake/core/routes.dart';
 import 'package:snake/features/options/presentation/view_modal/options_cubit/options_cubit.dart';
@@ -11,6 +13,7 @@ void main() async {
   Hive.registerAdapter<LeaderboardItem>(LeaderboardItemAdapter());
   await Hive.openBox('optionsBox');
   await Hive.openBox('leaderBoardBox');
+  await Firebase.initializeApp(options: DefaultFirebaseOptions.currentPlatform);
   runApp(const MyApp());
 }
 
