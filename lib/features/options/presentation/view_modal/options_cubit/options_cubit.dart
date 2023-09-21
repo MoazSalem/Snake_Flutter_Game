@@ -98,13 +98,15 @@ class OptionsCubit extends Cubit<OptionsState> {
           .then((value) {
         List<LeaderboardItem> list = [];
         for (var element in value.docs) {
-          list.add(LeaderboardItem(
-              name: element['name'],
-              difficulty: element['difficulty'],
-              score: element['score'],
-              width: element['width'],
-              height: element['height'],
-              uploaded: 1));
+          list.length <= 100
+              ? list.add(LeaderboardItem(
+                  name: element['name'],
+                  difficulty: element['difficulty'],
+                  score: element['score'],
+                  width: element['width'],
+                  height: element['height'],
+                  uploaded: 1))
+              : Null;
         }
         Hive.box('leaderBoardBox').put('${difficulty}List', list);
       });
@@ -113,7 +115,7 @@ class OptionsCubit extends Cubit<OptionsState> {
 
   // this function uploads a score to firebase
   uploadToFirebaseLeaderBoard({required LeaderboardItem item}) async {
-    await FirebaseFirestore.instance.collection('EasyList').add({
+    await FirebaseFirestore.instance.collection('${item.difficulty}List').add({
       'name': item.name,
       'score': item.score,
       'difficulty': item.difficulty,
