@@ -3,16 +3,14 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:hive_flutter/adapters.dart';
 import 'package:snake/core/models/leaderboard_item.dart';
 import 'package:snake/core/routes.dart';
-import 'package:snake/core/utils/service_locator.dart';
 import 'package:snake/features/options/presentation/view_modal/options_cubit/options_cubit.dart';
 
 void main() async {
   WidgetsFlutterBinding.ensureInitialized();
   await Hive.initFlutter();
-  Hive.registerAdapter(LeaderboardItemAdapter());
-  getIt.registerSingleton<Box>(await Hive.openBox('optionsBox'));
-  getIt.registerSingleton<Box>(await Hive.openBox<List<LeaderboardItem>>('leaderBoardBox'),
-      instanceName: 'Leaderboard');
+  Hive.registerAdapter<LeaderboardItem>(LeaderboardItemAdapter());
+  await Hive.openBox('optionsBox');
+  await Hive.openBox<List<LeaderboardItem>>('leaderBoardBox');
   runApp(const MyApp());
 }
 

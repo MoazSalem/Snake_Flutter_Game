@@ -27,6 +27,7 @@ class GameCubit extends Cubit<GameState> {
   late Duration difficultyDuration;
   String currentDirection = 'up';
   String upcomingDirection = 'up';
+  List<String> difficultyNames = ['Easy', 'Normal', 'Hard', 'VeryHard', 'Insane'];
 
   setDifficulty({required int difficultyType}) {
     difficultyIndex = difficultyType;
@@ -123,9 +124,8 @@ class GameCubit extends Cubit<GameState> {
   void addToLeaderboard({required LeaderboardItem newItem}) {
     late List<LeaderboardItem> list;
     // get the correct leaderboard for the difficulty
-    list = getIt
-        .get<Box>(instanceName: 'Leaderboard')
-        .get('${newItem.difficulty}List', defaultValue: <LeaderboardItem>[]);
+    list = Hive.box<List<LeaderboardItem>>('leaderBoardBox')
+        .get('${newItem.difficulty}List', defaultValue: <LeaderboardItem>[])!;
     // add the new item to the leaderboard
     int index = list.indexWhere((item) => item.score < newItem.score);
     // If the new item has the lowest score, add it at the end.
@@ -140,7 +140,7 @@ class GameCubit extends Cubit<GameState> {
       list.removeLast();
     }
     // add the score to the leaderboard
-    getIt.get<Box>(instanceName: 'Leaderboard').put('${newItem.difficulty}List', list);
+    Hive.box<List<LeaderboardItem>>('leaderBoardBox').put('${newItem.difficulty}List', list);
     emit(GameAddLeaderboard());
   }
 }

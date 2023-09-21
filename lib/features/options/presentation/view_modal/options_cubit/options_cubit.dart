@@ -14,10 +14,11 @@ class OptionsCubit extends Cubit<OptionsState> {
   late int boardHeight;
 
   getSettings() {
-    controllerStyle = getIt.get<Box>().get('controllerStyle') ?? 1;
-    boardWidth = getIt.get<Box>().get('boardWidth') ?? (getIt.get<Size>().width * 0.036).toInt();
-    boardHeight =
-        getIt.get<Box>().get('boardHeight') ?? ((getIt.get<Size>().width * 0.036) * 1.7).toInt();
+    controllerStyle = Hive.box('optionsBox').get('controllerStyle') ?? 1;
+    boardWidth =
+        Hive.box('optionsBox').get('boardWidth') ?? (getIt.get<Size>().width * 0.036).toInt();
+    boardHeight = Hive.box('optionsBox').get('boardHeight') ??
+        ((getIt.get<Size>().width * 0.036) * 1.7).toInt();
   }
 
   resetSize() {
@@ -27,14 +28,14 @@ class OptionsCubit extends Cubit<OptionsState> {
   }
 
   saveSize() {
-    getIt.get<Box>().put('boardHeight', boardHeight);
-    getIt.get<Box>().put('boardWidth', boardWidth);
+    Hive.box('optionsBox').put('boardHeight', boardHeight);
+    Hive.box('optionsBox').put('boardWidth', boardWidth);
     emit(OptionsChanged());
   }
 
   changeControllerStyle(int style) {
     controllerStyle = style;
-    getIt.get<Box>().put('controllerStyle', controllerStyle);
+    Hive.box('optionsBox').put('controllerStyle', controllerStyle);
     emit(OptionsChanged());
   }
 

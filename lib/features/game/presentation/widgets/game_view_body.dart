@@ -1,9 +1,8 @@
-import 'package:audioplayers/audioplayers.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
-import 'package:snake/core/utils/assets.dart';
-import 'package:snake/features/game/presentation/view_modal/game_cubit/game_cubit.dart';
-import 'package:snake/features/game/presentation/widgets/score_widget.dart';
+import '../view_modal/game_cubit/game_cubit.dart';
+import 'dialogs.dart';
+import 'score_widget.dart';
 import 'game_board_view.dart';
 import 'controller.dart';
 
@@ -29,25 +28,4 @@ class GameViewBody extends StatelessWidget {
       ),
     );
   }
-}
-
-gameOver(BuildContext context) {
-  // play game over sound
-  AudioPlayer().play(AssetSource(AssetsData.gameoverAudio));
-  showDialog(
-      context: context,
-      builder: (context) {
-        return AlertDialog(
-          title: const Text('Game Over'),
-          content: const Text('You Hit Yourself!'),
-          actions: [
-            TextButton(
-                onPressed: () {
-                  Navigator.pop(context);
-                  Navigator.pop(context);
-                },
-                child: const Text('Exit')),
-          ],
-        );
-      });
 }
