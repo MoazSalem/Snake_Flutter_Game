@@ -14,10 +14,14 @@ class LeaderboardItem extends HiveObject {
   int width;
   @HiveField(4)
   int height;
+
+  @HiveField(5)
+  int uploaded;
   LeaderboardItem(
       {required this.name,
       required this.difficulty,
       required this.score,
       required this.width,
-      required this.height});
+      required this.height,
+      this.uploaded = 0});
 }

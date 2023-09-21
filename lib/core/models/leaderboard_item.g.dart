@@ -22,13 +22,14 @@ class LeaderboardItemAdapter extends TypeAdapter<LeaderboardItem> {
       score: fields[2] as int,
       width: fields[3] as int,
       height: fields[4] as int,
+      uploaded: fields[5] as int,
     );
   }
 
   @override
   void write(BinaryWriter writer, LeaderboardItem obj) {
     writer
-      ..writeByte(5)
+      ..writeByte(6)
       ..writeByte(0)
       ..write(obj.name)
       ..writeByte(1)
@@ -38,7 +39,9 @@ class LeaderboardItemAdapter extends TypeAdapter<LeaderboardItem> {
       ..writeByte(3)
       ..write(obj.width)
       ..writeByte(4)
-      ..write(obj.height);
+      ..write(obj.height)
+      ..writeByte(5)
+      ..write(obj.uploaded);
   }
 
   @override
