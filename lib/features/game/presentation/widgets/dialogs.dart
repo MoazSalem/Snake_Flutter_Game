@@ -12,7 +12,7 @@ import '../view_modal/game_cubit/game_cubit.dart';
 TextEditingController _controller = TextEditingController();
 gameOver(BuildContext context) {
   // play game over sound
-  AudioPlayer().play(AssetSource(AssetsData.gameoverAudio));
+  AudioPlayer().play(AssetSource(AssetsData.gameOverAudio));
   showDialog(
       barrierDismissible: false,
       context: context,

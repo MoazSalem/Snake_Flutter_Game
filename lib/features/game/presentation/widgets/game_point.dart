@@ -30,6 +30,10 @@ Color getColor(int x, int y, GameBoard gameBoard) {
       {
         return getIt.get<ColorScheme>().primary;
       }
+    case 4:
+      {
+        return Colors.amberAccent;
+      }
     default:
       {
         return getIt.get<ColorScheme>().onSecondary.withOpacity(0.6);

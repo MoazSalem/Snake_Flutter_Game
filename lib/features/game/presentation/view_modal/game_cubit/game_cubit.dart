@@ -18,10 +18,12 @@ class GameCubit extends Cubit<GameState> {
   late GameBoard gameBoard;
   late Snake snake;
   late Food food;
+  Food? specialFood;
   late bool game;
   late int score;
   late int difficultyIndex;
   late Duration difficultyDuration;
+  late int counter;
   String currentDirection = 'up';
   String upcomingDirection = 'up';
 
@@ -36,6 +38,7 @@ class GameCubit extends Cubit<GameState> {
     snake = Snake(boardHeight: gameBoard.height, boardWidth: gameBoard.width);
     food = Food(boardWidth: gameBoard.width, boardHeight: gameBoard.height);
     score = 0;
+    counter = kSpecialCounter + (10 * difficultyIndex);
     // put snake head and body on the board
     draw();
     // start the game loop
@@ -43,6 +46,12 @@ class GameCubit extends Cubit<GameState> {
     emit(GameStart());
     // This is the game loop that runs until the game is over
     while (game == true) {
+      checkCounter(count: counter--);
+      specialFood != null
+          ? specialFood!.checkEaten(snake.headPoint)
+              ? {foodEaten(special: 1), emit(GameFoodEaten())}
+              : null
+          : null;
       snake.move(direction: currentDirection, gameBoard: gameBoard);
       food.checkEaten(snake.headPoint) ? {foodEaten(), emit(GameFoodEaten())} : null;
       snake.checkCollision(gameBoard: gameBoard) ? {game = false, emit(GameOver())} : null;
@@ -59,45 +68,62 @@ class GameCubit extends Cubit<GameState> {
     for (var element in gameBoard.grid) {
       element.fillRange(0, element.length, 0);
     }
+    // draw food on the board
+    gameBoard.grid[food.position.yCoordinate][food.position.xCoordinate] = 1;
+    specialFood != null
+        ? gameBoard.grid[specialFood!.position.yCoordinate][specialFood!.position.xCoordinate] = 4
+        : null;
     // draw snake head on the board
     gameBoard.grid[snake.headPoint.yCoordinate][snake.headPoint.xCoordinate] = 3;
     // draw snake body on the board
     for (Point point in snake.body) {
       gameBoard.grid[point.yCoordinate][point.xCoordinate] = 2;
     }
-    // draw food on the board
-    gameBoard.grid[food.position.yCoordinate][food.position.xCoordinate] = 1;
     emit(GameNextPosition());
   }
 
-  void foodEaten() {
+  void foodEaten({int special = 0}) {
+    special == 1 ? {specialFood = null, counter = kSpecialCounter + (10 * difficultyIndex)} : null;
     // play eat food sound
-    AudioPlayer().play(AssetSource(AssetsData.eatAudio));
+    AudioPlayer().play(AssetSource(special == 0 ? AssetsData.eatAudio : AssetsData.goldenEatAudio));
     // not sure if this is necessary
     AudioPlayer().dispose();
     // add a new point to the snake's body
     snake.body.add(snake.body.last);
     // generate a new food
-    generateFood();
+    special == 0 ? generateFood() : null;
     // increase the score
-    score += (4 + difficultyIndex * 4);
+    special == 1 ? score += (counter + difficultyIndex * 8) : score += (4 + difficultyIndex * 4);
   }
 
-  generateFood() {
+  checkCounter({required int count}) {
+    switch (count) {
+      case const (kSpecialCounter ~/ 3):
+        {
+          AudioPlayer().play(AssetSource(AssetsData.goldenAppearAudio));
+          generateFood(special: 1);
+          break;
+        }
+      case 0:
+        {
+          specialFood = null;
+          AudioPlayer().play(AssetSource(AssetsData.goldenDisappearAudio));
+          counter = kSpecialCounter + (10 * difficultyIndex);
+          break;
+        }
+    }
+  }
+
+  generateFood({int special = 0}) {
     // generate new food
     Food tempFood = Food(boardWidth: gameBoard.width, boardHeight: gameBoard.height);
     switch (gameBoard.grid[tempFood.position.yCoordinate][tempFood.position.xCoordinate]) {
       case 0:
         {
-          food = tempFood;
+          special == 0 ? food = tempFood : specialFood = tempFood;
           break;
         }
-      case 2:
-        {
-          generateFood();
-          break;
-        }
-      case 3:
+      default:
         {
           generateFood();
           break;
