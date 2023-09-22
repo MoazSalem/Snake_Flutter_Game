@@ -2,3 +2,4 @@
 const kGameDifficultySpeeds = [600, 400, 200, 100, 50];
 const List<String> kDifficultyNames = ['Easy', 'Normal', 'Hard', 'VeryHard', 'Impossible'];
 const int kSpecialCounter = 90;
+const int kHighScore = 2000;

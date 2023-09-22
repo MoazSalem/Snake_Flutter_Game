@@ -24,6 +24,7 @@ class GameCubit extends Cubit<GameState> {
   late int difficultyIndex;
   late Duration difficultyDuration;
   late int counter;
+  bool highScore = false;
   String currentDirection = 'up';
   String upcomingDirection = 'up';
 
@@ -46,14 +47,25 @@ class GameCubit extends Cubit<GameState> {
     emit(GameStart());
     // This is the game loop that runs until the game is over
     while (game == true) {
+      // check if the special food counter is over
       checkCounter(count: counter--);
+      // Something fun happens when you reach the high score
+      highScore
+          ? null
+          : score > kHighScore
+              ? {highScore = true, AudioPlayer().play(AssetSource(AssetsData.easterEggAudio))}
+              : null;
+      // check if the snake ate the golden apple
       specialFood != null
           ? specialFood!.checkEaten(snake.headPoint)
               ? {foodEaten(special: 1), emit(GameFoodEaten())}
               : null
           : null;
+      // move the snake
       snake.move(direction: currentDirection, gameBoard: gameBoard);
+      // check if the snake ate the food
       food.checkEaten(snake.headPoint) ? {foodEaten(), emit(GameFoodEaten())} : null;
+      // check if the snake hit itself
       snake.checkCollision(gameBoard: gameBoard) ? {game = false, emit(GameOver())} : null;
       draw();
       emit(GameNextPosition());
@@ -69,10 +81,10 @@ class GameCubit extends Cubit<GameState> {
       element.fillRange(0, element.length, 0);
     }
     // draw food on the board
-    gameBoard.grid[food.position.yCoordinate][food.position.xCoordinate] = 1;
     specialFood != null
         ? gameBoard.grid[specialFood!.position.yCoordinate][specialFood!.position.xCoordinate] = 4
         : null;
+    gameBoard.grid[food.position.yCoordinate][food.position.xCoordinate] = 1;
     // draw snake head on the board
     gameBoard.grid[snake.headPoint.yCoordinate][snake.headPoint.xCoordinate] = 3;
     // draw snake body on the board
