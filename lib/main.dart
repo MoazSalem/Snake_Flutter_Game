@@ -6,6 +6,7 @@ import 'firebase_options.dart';
 import 'package:snake/core/models/leaderboard_item.dart';
 import 'package:snake/core/routes.dart';
 import 'package:snake/features/options/presentation/view_modal/options_cubit/options_cubit.dart';
+import 'package:snake/features/leaderboard/presentation/view_modal/leaderboard_cubit/leaderboard_cubit.dart';
 
 void main() async {
   WidgetsFlutterBinding.ensureInitialized();
@@ -22,8 +23,15 @@ class MyApp extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return BlocProvider(
-      create: (context) => OptionsCubit()..getSettings(),
+    return MultiBlocProvider(
+      providers: [
+        BlocProvider<OptionsCubit>(
+          create: (context) => OptionsCubit()..getSettings(),
+        ),
+        BlocProvider<LeaderboardCubit>(
+          create: (context) => LeaderboardCubit()..leaderboardSetup(),
+        ),
+      ],
       child: MaterialApp(
           title: 'Snake',
           debugShowCheckedModeBanner: false,

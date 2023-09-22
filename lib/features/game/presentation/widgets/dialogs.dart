@@ -1,10 +1,12 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:hive/hive.dart';
 import 'package:audioplayers/audioplayers.dart';
 import 'package:snake/core/models/leaderboard_item.dart';
 import 'package:snake/core/utils/assets.dart';
 import 'package:snake/core/utils/service_locator.dart';
 import 'package:snake/features/constants.dart';
+import 'package:snake/features/leaderboard/presentation/view_modal/leaderboard_cubit/leaderboard_cubit.dart';
 import '../view_modal/game_cubit/game_cubit.dart';
 
 TextEditingController _controller = TextEditingController();
@@ -59,7 +61,7 @@ saveScore(BuildContext context) {
           actions: [
             TextButton(
                 onPressed: () {
-                  getIt.get<GameCubit>().addToLeaderboard(
+                  BlocProvider.of<LeaderboardCubit>(context).addToLeaderboard(
                       newItem: LeaderboardItem(
                           name: _controller.text,
                           difficulty: kDifficultyNames[getIt.get<GameCubit>().difficultyIndex],
