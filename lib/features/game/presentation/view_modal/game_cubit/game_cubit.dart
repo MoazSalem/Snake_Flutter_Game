@@ -58,7 +58,7 @@ class GameCubit extends Cubit<GameState> {
       // check if the snake ate the golden apple
       specialFood != null
           ? specialFood!.checkEaten(snake.headPoint)
-              ? {foodEaten(special: 1), emit(GameFoodEaten())}
+              ? {specialFoodEaten(), emit(GameFoodEaten())}
               : null
           : null;
       // move the snake
@@ -94,18 +94,32 @@ class GameCubit extends Cubit<GameState> {
     emit(GameNextPosition());
   }
 
-  void foodEaten({int special = 0}) {
-    special == 1 ? {specialFood = null, counter = kSpecialCounter + (10 * difficultyIndex)} : null;
+  void foodEaten() {
     // play eat food sound
-    AudioPlayer().play(AssetSource(special == 0 ? AssetsData.eatAudio : AssetsData.goldenEatAudio));
+    AudioPlayer().play(AssetSource(AssetsData.eatAudio));
     // not sure if this is necessary
     AudioPlayer().dispose();
     // add a new point to the snake's body
     snake.body.add(snake.body.last);
     // generate a new food
-    special == 0 ? generateFood() : null;
+    generateFood();
     // increase the score
-    special == 1 ? score += (counter + difficultyIndex * 8) : score += (4 + difficultyIndex * 4);
+    score += (4 + difficultyIndex * 4);
+  }
+
+  void specialFoodEaten() {
+    // reset the special food
+    specialFood = null;
+    // play eat food sound
+    AudioPlayer().play(AssetSource(AssetsData.goldenEatAudio));
+    // not sure if this is necessary
+    AudioPlayer().dispose();
+    // reset the counter
+    counter = kSpecialCounter + (10 * difficultyIndex);
+    // add a new point to the snake's body
+    snake.body.add(snake.body.last);
+    // increase the score
+    score += (counter + difficultyIndex * 8);
   }
 
   checkCounter({required int count}) {
@@ -113,7 +127,7 @@ class GameCubit extends Cubit<GameState> {
       case const (kSpecialCounter ~/ 3):
         {
           AudioPlayer().play(AssetSource(AssetsData.goldenAppearAudio));
-          generateFood(special: 1);
+          generateSpecialFood();
           break;
         }
       case 0:
@@ -126,18 +140,35 @@ class GameCubit extends Cubit<GameState> {
     }
   }
 
-  generateFood({int special = 0}) {
+  generateFood() {
     // generate new food
     Food tempFood = Food(boardWidth: gameBoard.width, boardHeight: gameBoard.height);
     switch (gameBoard.grid[tempFood.position.yCoordinate][tempFood.position.xCoordinate]) {
       case 0:
         {
-          special == 0 ? food = tempFood : specialFood = tempFood;
+          food = tempFood;
           break;
         }
       default:
         {
           generateFood();
+          break;
+        }
+    }
+  }
+
+  generateSpecialFood() {
+    // generate new food
+    Food tempFood = Food(boardWidth: gameBoard.width, boardHeight: gameBoard.height);
+    switch (gameBoard.grid[tempFood.position.yCoordinate][tempFood.position.xCoordinate]) {
+      case 0:
+        {
+          specialFood = tempFood;
+          break;
+        }
+      default:
+        {
+          generateSpecialFood();
           break;
         }
     }
