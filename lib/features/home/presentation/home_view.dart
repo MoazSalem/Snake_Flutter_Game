@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:snake/features/home/presentation/widgets/home_view_body.dart';
+import 'package:snake/features/leaderboard/presentation/view_modal/leaderboard_cubit/leaderboard_cubit.dart';
 import 'package:snake/features/options/presentation/view_modal/options_cubit/options_cubit.dart';
 
 class HomeView extends StatelessWidget {
@@ -10,8 +11,12 @@ class HomeView extends StatelessWidget {
   Widget build(BuildContext context) {
     return BlocBuilder<OptionsCubit, OptionsState>(
       builder: (context, state) {
-        return const Scaffold(
-          body: HomeViewBody(),
+        return BlocBuilder<LeaderboardCubit, LeaderboardState>(
+          builder: (context, state) {
+            return const Scaffold(
+              body: HomeViewBody(),
+            );
+          },
         );
       },
     );
