@@ -1,7 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:hive/hive.dart';
-import 'package:audioplayers/audioplayers.dart';
 import 'package:snake/core/models/leaderboard_item.dart';
 import 'package:snake/core/utils/assets.dart';
 import 'package:snake/core/utils/service_locator.dart';
@@ -12,7 +11,7 @@ import '../view_modal/game_cubit/game_cubit.dart';
 TextEditingController _controller = TextEditingController();
 gameOver(BuildContext context) {
   // play game over sound
-  AudioPlayer().play(AssetSource(AssetsData.gameOverAudio));
+  getIt.get<GameCubit>().playAudio(audio: AssetsData.gameOverAudio);
   showDialog(
       barrierDismissible: false,
       context: context,

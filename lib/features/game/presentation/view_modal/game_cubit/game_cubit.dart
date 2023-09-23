@@ -1,7 +1,7 @@
-import 'package:audioplayers/audioplayers.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter/cupertino.dart';
+import 'package:just_audio/just_audio.dart';
 import 'package:snake/core/models/food.dart';
 import 'package:snake/core/models/game_board.dart';
 import 'package:snake/core/models/point.dart';
@@ -53,7 +53,7 @@ class GameCubit extends Cubit<GameState> {
       highScore
           ? null
           : score > kHighScore
-              ? {highScore = true, AudioPlayer().play(AssetSource(AssetsData.easterEggAudio))}
+              ? {highScore = true, playAudio(audio: AssetsData.easterEggAudio)}
               : null;
       // check if the snake ate the golden apple
       specialFood != null
@@ -94,11 +94,9 @@ class GameCubit extends Cubit<GameState> {
     emit(GameNextPosition());
   }
 
-  void foodEaten() {
+  Future<void> foodEaten() async {
     // play eat food sound
-    AudioPlayer().play(AssetSource(AssetsData.eatAudio));
-    // not sure if this is necessary
-    AudioPlayer().dispose();
+    playAudio(audio: AssetsData.eatAudio);
     // add a new point to the snake's body
     snake.body.add(snake.body.last);
     // generate a new food
@@ -111,7 +109,7 @@ class GameCubit extends Cubit<GameState> {
     // reset the special food
     specialFood = null;
     // play eat food sound
-    AudioPlayer().play(AssetSource(AssetsData.goldenEatAudio));
+    playAudio(audio: AssetsData.goldenEatAudio);
     // not sure if this is necessary
     AudioPlayer().dispose();
     // reset the counter
@@ -126,14 +124,14 @@ class GameCubit extends Cubit<GameState> {
     switch (count) {
       case const (kSpecialCounter ~/ 3):
         {
-          AudioPlayer().play(AssetSource(AssetsData.goldenAppearAudio));
+          playAudio(audio: AssetsData.goldenAppearAudio);
           generateSpecialFood();
           break;
         }
       case 0:
         {
           specialFood = null;
-          AudioPlayer().play(AssetSource(AssetsData.goldenDisappearAudio));
+          playAudio(audio: AssetsData.goldenDisappearAudio);
           counter = kSpecialCounter + (10 * difficultyIndex);
           break;
         }
@@ -172,6 +170,13 @@ class GameCubit extends Cubit<GameState> {
           break;
         }
     }
+  }
+
+  playAudio({required String audio}) {
+    AudioPlayer player = AudioPlayer(handleAudioSessionActivation: false);
+    player.setAsset(audio, preload: true).then((value) {
+      player.play().then((value) => player.dispose());
+    });
   }
 
   void changeDirection(String nextDirection) {
