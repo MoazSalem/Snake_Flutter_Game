@@ -3,9 +3,9 @@ on:
   push:
 
 env:
-  flutter-version: "3.24.2"
+  flutter-version: "3.29.1"
   FLUTTER_TOOLS_CACHE: |
-    /opt/hostedtoolcache/flutter/stable-3.24.2-x64/packages/flutter_tools
+    /opt/hostedtoolcache/flutter/stable-3.29.1-x64/packages/flutter_tools
   BUILD_CACHE: |
     build
     .dart_tool

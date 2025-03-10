@@ -1,0 +1,2 @@
+C:/Users/HUAWEI/StudioProjects/Snake_Flutter_Game/android/app/.cxx/Debug/2m4f2050/x86/CMakeFiles/edit_cache.dir
+C:/Users/HUAWEI/StudioProjects/Snake_Flutter_Game/android/app/.cxx/Debug/2m4f2050/x86/CMakeFiles/rebuild_cache.dir
