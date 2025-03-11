@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:snake/core/utils/app_sizes.dart';
+import 'package:snake/core/utils/localization.dart';
 import 'package:snake/features/difficulty/presentation/widgets/difficulty_view_body.dart';
 
 class DifficultyView extends StatelessWidget {
@@ -8,7 +9,10 @@ class DifficultyView extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      appBar: AppBar(title: const Text('Difficulty'), centerTitle: true, toolbarHeight: AppSizes.appBarSize),
+      appBar: AppBar(
+          title: const Text(AppLocalization.difficultyScreenTitle),
+          centerTitle: true,
+          toolbarHeight: AppSizes.appBarSize),
       body: const DifficultyViewBody(),
     );
   }

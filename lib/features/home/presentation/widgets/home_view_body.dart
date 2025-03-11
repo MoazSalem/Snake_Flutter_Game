@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:snake/core/utils/app_sizes.dart';
 import 'package:snake/core/utils/routes.dart';
 import 'package:snake/core/utils/service_locator.dart';
 import 'package:snake/features/options/presentation/cubit/options_cubit.dart';
@@ -19,42 +20,39 @@ class _HomeViewBodyState extends State<HomeViewBody> {
 
   @override
   Widget build(BuildContext context) {
-    return Padding(
-      padding: const EdgeInsets.all(28.0),
-      child: Center(
-        child: Column(
-          mainAxisSize: MainAxisSize.max,
-          mainAxisAlignment: MainAxisAlignment.center,
-          crossAxisAlignment: CrossAxisAlignment.center,
-          children: [
-            SizedBox(
-                height: 240,
-                width: 240,
-                child: ElevatedButton(
-                    onPressed: () => Navigator.pushNamed(
-                        context, AppRoutes.difficultyScreen),
-                    child: const Text(
-                      'Start Game',
-                      style: TextStyle(fontSize: 24),
-                    ))),
-            const SizedBox(height: 16),
-            SizedBox(
-                height: 60,
-                width: 240,
-                child: ElevatedButton(
-                    onPressed: () =>
-                        Navigator.pushNamed(context, AppRoutes.leaderScreen),
-                    child: const Text('Leaderboard'))),
-            const SizedBox(height: 16),
-            SizedBox(
-                height: 60,
-                width: 240,
-                child: ElevatedButton(
-                    onPressed: () =>
-                        Navigator.pushNamed(context, AppRoutes.optionsScreen),
-                    child: const Text('Options'))),
-          ],
-        ),
+    return Center(
+      child: Column(
+        mainAxisSize: MainAxisSize.max,
+        mainAxisAlignment: MainAxisAlignment.center,
+        crossAxisAlignment: CrossAxisAlignment.center,
+        children: [
+          SizedBox(
+              height: AppSizes.buttonWidth,
+              width: AppSizes.buttonWidth,
+              child: ElevatedButton(
+                  onPressed: () =>
+                      Navigator.pushNamed(context, AppRoutes.difficultyScreen),
+                  child: const Text(
+                    'Start Game',
+                    style: TextStyle(fontSize: AppSizes.largeTitleSize),
+                  ))),
+          const SizedBox(height: AppSizes.divider),
+          SizedBox(
+              height: AppSizes.buttonHeight,
+              width: AppSizes.buttonWidth,
+              child: ElevatedButton(
+                  onPressed: () =>
+                      Navigator.pushNamed(context, AppRoutes.leaderScreen),
+                  child: const Text('Leaderboard'))),
+          const SizedBox(height: AppSizes.divider),
+          SizedBox(
+              height: AppSizes.buttonHeight,
+              width: AppSizes.buttonWidth,
+              child: ElevatedButton(
+                  onPressed: () =>
+                      Navigator.pushNamed(context, AppRoutes.optionsScreen),
+                  child: const Text('Options'))),
+        ],
       ),
     );
   }

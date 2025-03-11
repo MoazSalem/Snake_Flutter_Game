@@ -1,12 +1,13 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:hive/hive.dart';
+import 'package:snake/core/utils/app_sizes.dart';
 import 'package:snake/core/utils/service_locator.dart';
 import '../view_modal/game_cubit/game_cubit.dart';
 import 'game_point.dart';
 
 class GameBoardView extends StatefulWidget {
-  const GameBoardView({Key? key}) : super(key: key);
+  const GameBoardView({super.key});
 
   @override
   State<GameBoardView> createState() => _GameBoardViewState();
@@ -39,7 +40,7 @@ class _GameBoardViewState extends State<GameBoardView> {
     return BlocBuilder<GameCubit, GameState>(
       builder: (context, state) {
         return GridView.builder(
-            padding: const EdgeInsets.symmetric(horizontal: 24.0, vertical: 12.0),
+            padding: const EdgeInsets.symmetric(horizontal: AppSizes.padding, vertical: AppSizes.smallerPadding),
             itemCount: c.gameBoard.width * c.gameBoard.height,
             shrinkWrap: true,
             physics: const NeverScrollableScrollPhysics(),

@@ -1,17 +1,18 @@
 import 'package:flutter/material.dart';
 import 'package:snake/core/models/game_board.dart';
+import 'package:snake/core/utils/app_sizes.dart';
 import 'package:snake/core/utils/service_locator.dart';
 
 class GamePoint extends StatelessWidget {
   final GameBoard gameBoard;
   final int index;
-  const GamePoint({Key? key, required this.gameBoard, required this.index}) : super(key: key);
+  const GamePoint({super.key, required this.gameBoard, required this.index});
 
   @override
   Widget build(BuildContext context) {
     return Container(
-        width: 10,
-        height: 10,
+        width: AppSizes.screenDotSize,
+        height: AppSizes.screenDotSize,
         color: getColor(index % gameBoard.width, index ~/ gameBoard.width, gameBoard));
   }
 }
@@ -36,7 +37,7 @@ Color getColor(int x, int y, GameBoard gameBoard) {
       }
     default:
       {
-        return getIt.get<ColorScheme>().onSecondary.withOpacity(0.6);
+        return getIt.get<ColorScheme>().onSecondary.withValues(alpha: 0.6);
       }
   }
 }

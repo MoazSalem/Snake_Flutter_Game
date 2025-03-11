@@ -24,8 +24,8 @@ class GameBoardWidget extends StatelessWidget {
                   padding:
                       EdgeInsets.all(c.state.boardHeight / c.state.boardWidth),
                   child: Container(
-                    width: 10,
-                    height: 10,
+                    width: AppSizes.screenDotSize,
+                    height: AppSizes.screenDotSize,
                     color: getIt
                         .get<ColorScheme>()
                         .onSecondary

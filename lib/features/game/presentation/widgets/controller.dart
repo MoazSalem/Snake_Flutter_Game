@@ -1,18 +1,19 @@
 import 'package:flutter/material.dart';
 import 'package:hive/hive.dart';
+import 'package:snake/core/utils/app_sizes.dart';
 import 'package:snake/core/utils/service_locator.dart';
 import 'package:snake/core/utils/styles.dart';
 import '../view_modal/game_cubit/game_cubit.dart';
 
 class Controller extends StatelessWidget {
-  const Controller({Key? key}) : super(key: key);
+  const Controller({super.key});
 
   @override
   Widget build(BuildContext context) {
     final int style = Hive.box('optionsBox').get('controllerStyle', defaultValue:  1);
     GameCubit c = getIt.get<GameCubit>();
     return Padding(
-      padding: const EdgeInsets.only(left: 24.0, right: 24.0, bottom: 24.0, top: 6.0),
+      padding: const EdgeInsets.only(left: AppSizes.padding, right: AppSizes.padding, bottom: AppSizes.padding, top: AppSizes.topPadding),
       child: SizedBox(
         height: MediaQuery.sizeOf(context).height * 0.15,
         child: Row(

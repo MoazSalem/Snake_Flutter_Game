@@ -8,6 +8,8 @@ class AppSizes{
   static const double smallerPadding = 12;
   static const double horizontalPadding = 30;
   static const double leaderboardTabHeight = 40;
-
-
+  static const double buttonWidth = 240;
+  static const double buttonHeight = 60;
+  static const double divider = 20;
+  static const double screenDotSize = 10;
 }
