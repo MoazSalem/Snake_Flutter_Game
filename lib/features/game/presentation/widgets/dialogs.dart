@@ -4,7 +4,7 @@ import 'package:hive/hive.dart';
 import 'package:snake/core/models/leaderboard_item.dart';
 import 'package:snake/core/utils/assets.dart';
 import 'package:snake/core/utils/service_locator.dart';
-import 'package:snake/features/constants.dart';
+import 'package:snake/core/utils/constants.dart';
 import 'package:snake/features/leaderboard/presentation/view_modal/leaderboard_cubit/leaderboard_cubit.dart';
 import '../view_modal/game_cubit/game_cubit.dart';
 
@@ -63,7 +63,7 @@ saveScore(BuildContext context) {
                   BlocProvider.of<LeaderboardCubit>(context).addToLeaderboard(
                       newItem: LeaderboardItem(
                           name: _controller.text,
-                          difficulty: kDifficultyNames[getIt.get<GameCubit>().difficultyIndex],
+                          difficulty: GameValues.difficultyNames[getIt.get<GameCubit>().difficultyIndex],
                           score: getIt.get<GameCubit>().score,
                           width: Hive.box('optionsBox').get('boardWidth',
                               defaultValue: (getIt.get<Size>().width * 0.036).toInt()),

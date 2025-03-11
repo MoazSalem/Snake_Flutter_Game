@@ -1,13 +1,13 @@
 import 'package:animated_segmented_tab_control/animated_segmented_tab_control.dart';
 import 'package:flutter/material.dart';
 import 'package:hive/hive.dart';
-import 'package:snake/features/constants.dart';
+import 'package:snake/core/utils/constants.dart';
 import 'leaderboard_tile.dart';
 
 late TabController _controller;
 
 class LeaderboardViewBody extends StatefulWidget {
-  const LeaderboardViewBody({Key? key}) : super(key: key);
+  const LeaderboardViewBody({super.key});
 
   @override
   State<LeaderboardViewBody> createState() => _LeaderboardViewBodyState();
@@ -55,19 +55,19 @@ class _LeaderboardViewBodyState extends State<LeaderboardViewBody> with TickerPr
               ],
             ),
           ),
-          (Hive.box('leaderBoardBox').get("${kDifficultyNames[_controller.index]}List") != null &&
+          (Hive.box('leaderBoardBox').get("${GameValues.difficultyNames[_controller.index]}List") != null &&
                   Hive.box('leaderBoardBox')
-                      .get("${kDifficultyNames[_controller.index]}List")
+                      .get("${GameValues.difficultyNames[_controller.index]}List")
                       .isNotEmpty)
               ? ListView.builder(
                   shrinkWrap: true,
                   itemCount: Hive.box('leaderBoardBox')
-                      .get("${kDifficultyNames[_controller.index]}List")!
+                      .get("${GameValues.difficultyNames[_controller.index]}List")!
                       .length,
                   itemBuilder: (context, index) {
                     return LeaderboardTile(
                         item: Hive.box('leaderBoardBox')
-                            .get("${kDifficultyNames[_controller.index]}List")[index],
+                            .get("${GameValues.difficultyNames[_controller.index]}List")[index],
                         position: index + 1);
                   })
               : Column(

@@ -1,11 +1,12 @@
 import 'package:flutter/material.dart';
+import 'package:snake/core/utils/routes.dart';
 import 'package:snake/features/game/presentation/data/screen_arguments.dart';
 
 class ButtonWidget extends StatelessWidget {
   final String text;
   final int difficultyType;
-  const ButtonWidget({Key? key, required this.text, required this.difficultyType})
-      : super(key: key);
+  const ButtonWidget(
+      {super.key, required this.text, required this.difficultyType});
 
   @override
   Widget build(BuildContext context) {
@@ -15,7 +16,8 @@ class ButtonWidget extends StatelessWidget {
           height: 60,
           width: 240,
           child: ElevatedButton(
-              onPressed: () => Navigator.pushNamed(context, '/game',
+              onPressed: () => Navigator.pushNamed(
+                  context, AppRoutes.gameScreen,
                   arguments: ScreenArguments(difficultyType: difficultyType)),
               child: Text(
                 text,

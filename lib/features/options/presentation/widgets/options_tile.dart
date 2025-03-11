@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:snake/core/utils/app_sizes.dart';
 
 class OptionsTile extends StatelessWidget {
   final String title;
@@ -8,11 +9,12 @@ class OptionsTile extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return ListTile(
-      minVerticalPadding: 20,
-      contentPadding: const EdgeInsets.symmetric(horizontal: 30),
+      minVerticalPadding: AppSizes.verticalPadding,
+      contentPadding:
+          const EdgeInsets.symmetric(horizontal: AppSizes.horizontalPadding),
       title: Text(
         title,
-        style: const TextStyle(fontSize: 18),
+        style: const TextStyle(fontSize: AppSizes.titleSize),
       ),
       onTap: () => Navigator.pushNamed(context, goTo),
       trailing: Icon(

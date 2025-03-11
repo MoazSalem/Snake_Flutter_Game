@@ -4,7 +4,7 @@ import 'package:connectivity_plus/connectivity_plus.dart';
 import 'package:flutter/material.dart';
 import 'package:hive/hive.dart';
 import 'package:snake/core/models/leaderboard_item.dart';
-import 'package:snake/features/constants.dart';
+import 'package:snake/core/utils/constants.dart';
 
 part 'leaderboard_state.dart';
 
@@ -27,7 +27,7 @@ class LeaderboardCubit extends Cubit<LeaderboardState> {
 
   // This function uploads any scores that were not uploaded to firebase during offline play
   uploadNotUploadedScores() async {
-    for (var difficulty in kDifficultyNames) {
+    for (var difficulty in GameValues.difficultyNames) {
       Hive.box('leaderBoardBox').get("${difficulty}List") != null
           ? Hive.box('leaderBoardBox').get("${difficulty}List").forEach((element) async {
               if (element.uploaded == 0) {
@@ -40,7 +40,7 @@ class LeaderboardCubit extends Cubit<LeaderboardState> {
 
   // This function updates the scores from firebase and saves them to the local database
   getFirebaseLeaderBoard() {
-    for (var difficulty in kDifficultyNames) {
+    for (var difficulty in GameValues.difficultyNames) {
       FirebaseFirestore.instance
           .collection("${difficulty}List")
           .orderBy("score", descending: true)

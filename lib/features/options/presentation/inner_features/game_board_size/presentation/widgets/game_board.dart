@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:snake/core/utils/app_sizes.dart';
 import 'package:snake/core/utils/service_locator.dart';
 import 'package:snake/features/options/presentation/cubit/options_cubit.dart';
 
@@ -14,7 +15,7 @@ class GameBoardWidget extends StatelessWidget {
       builder: (context, state) {
         return GridView.builder(
             padding:
-                const EdgeInsets.symmetric(horizontal: 24.0, vertical: 12.0),
+                const EdgeInsets.symmetric(horizontal: AppSizes.padding, vertical: AppSizes.smallerPadding),
             itemCount: c.state.boardHeight * c.state.boardWidth,
             shrinkWrap: true,
             physics: const NeverScrollableScrollPhysics(),

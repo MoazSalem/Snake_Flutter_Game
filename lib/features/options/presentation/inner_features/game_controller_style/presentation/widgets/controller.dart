@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:snake/core/utils/app_sizes.dart';
 import 'package:snake/core/utils/service_locator.dart';
 import 'package:snake/core/utils/styles.dart';
 
@@ -10,7 +11,10 @@ class Controller extends StatelessWidget {
   Widget build(BuildContext context) {
     return Padding(
       padding: const EdgeInsets.only(
-          left: 24.0, right: 24.0, bottom: 24.0, top: 6.0),
+          left: AppSizes.padding,
+          right: AppSizes.padding,
+          bottom: AppSizes.padding,
+          top: AppSizes.topPadding),
       child: SizedBox(
         height: MediaQuery.sizeOf(context).height * 0.15,
         child: Row(

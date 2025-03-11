@@ -1,13 +1,14 @@
 import 'package:flutter/material.dart';
+import 'package:snake/core/utils/app_sizes.dart';
 import 'package:snake/features/difficulty/presentation/widgets/difficulty_view_body.dart';
 
 class DifficultyView extends StatelessWidget {
-  const DifficultyView({Key? key}) : super(key: key);
+  const DifficultyView({super.key});
 
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      appBar: AppBar(title: const Text('Difficulty'), centerTitle: true, toolbarHeight: 70),
+      appBar: AppBar(title: const Text('Difficulty'), centerTitle: true, toolbarHeight: AppSizes.appBarSize),
       body: const DifficultyViewBody(),
     );
   }

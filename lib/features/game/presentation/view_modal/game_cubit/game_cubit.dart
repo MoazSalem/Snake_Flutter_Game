@@ -7,7 +7,7 @@ import 'package:snake/core/models/game_board.dart';
 import 'package:snake/core/models/point.dart';
 import 'package:snake/core/models/snake.dart';
 import 'package:snake/core/utils/assets.dart';
-import 'package:snake/features/constants.dart';
+import 'package:snake/core/utils/constants.dart';
 
 part 'game_state.dart';
 
@@ -30,7 +30,7 @@ class GameCubit extends Cubit<GameState> {
 
   setDifficulty({required int difficultyType}) {
     difficultyIndex = difficultyType;
-    difficultyDuration = Duration(milliseconds: kGameDifficultySpeeds[difficultyType]);
+    difficultyDuration = Duration(milliseconds: GameValues.difficultySpeeds[difficultyType]);
   }
 
   Future<void> startGame({required int width, required int height}) async {
@@ -39,7 +39,7 @@ class GameCubit extends Cubit<GameState> {
     snake = Snake(boardHeight: gameBoard.height, boardWidth: gameBoard.width);
     food = Food(boardWidth: gameBoard.width, boardHeight: gameBoard.height);
     score = 0;
-    counter = kSpecialCounter + (10 * difficultyIndex);
+    counter = GameValues.specialCounter + (10 * difficultyIndex);
     // put snake head and body on the board
     draw();
     // start the game loop
@@ -52,7 +52,7 @@ class GameCubit extends Cubit<GameState> {
       // Something fun happens when you reach the high score
       highScore
           ? null
-          : score > kHighScore
+          : score > GameValues.highScore
               ? {highScore = true, playAudio(audio: AssetsData.easterEggAudio)}
               : null;
       // check if the snake ate the golden apple
@@ -113,7 +113,7 @@ class GameCubit extends Cubit<GameState> {
     // not sure if this is necessary
     AudioPlayer().dispose();
     // reset the counter
-    counter = kSpecialCounter + (10 * difficultyIndex);
+    counter = GameValues.specialCounter + (10 * difficultyIndex);
     // add a new point to the snake's body
     snake.body.add(snake.body.last);
     // increase the score
@@ -122,7 +122,7 @@ class GameCubit extends Cubit<GameState> {
 
   checkCounter({required int count}) {
     switch (count) {
-      case const (kSpecialCounter ~/ 3):
+      case const (GameValues.specialCounter ~/ 3):
         {
           playAudio(audio: AssetsData.goldenAppearAudio);
           generateSpecialFood();
@@ -132,7 +132,7 @@ class GameCubit extends Cubit<GameState> {
         {
           specialFood = null;
           playAudio(audio: AssetsData.goldenDisappearAudio);
-          counter = kSpecialCounter + (10 * difficultyIndex);
+          counter = GameValues.specialCounter + (10 * difficultyIndex);
           break;
         }
     }

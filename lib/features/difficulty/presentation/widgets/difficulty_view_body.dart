@@ -2,7 +2,7 @@ import 'package:flutter/material.dart';
 import 'button_widget.dart';
 
 class DifficultyViewBody extends StatelessWidget {
-  const DifficultyViewBody({Key? key}) : super(key: key);
+  const DifficultyViewBody({super.key});
 
   @override
   Widget build(BuildContext context) {

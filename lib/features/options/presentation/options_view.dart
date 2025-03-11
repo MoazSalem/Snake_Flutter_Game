@@ -1,4 +1,6 @@
 import 'package:flutter/material.dart';
+import 'package:snake/core/utils/app_sizes.dart';
+import 'package:snake/core/utils/localization.dart';
 import 'widgets/options_view_body.dart';
 
 class OptionsView extends StatelessWidget {
@@ -7,7 +9,10 @@ class OptionsView extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      appBar: AppBar(title: const Text('Options'), centerTitle: true, toolbarHeight: 70),
+      appBar: AppBar(
+          title: const Text(AppLocalization.optionScreenTitle),
+          centerTitle: true,
+          toolbarHeight: AppSizes.appBarSize),
       body: const OptionsViewBody(),
     );
   }

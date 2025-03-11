@@ -5,7 +5,7 @@ import 'view_modal/game_cubit/game_cubit.dart';
 import 'widgets/game_view_body.dart';
 
 class GameView extends StatefulWidget {
-  const GameView({Key? key}) : super(key: key);
+  const GameView({super.key});
 
   @override
   State<GameView> createState() => _GameViewState();
