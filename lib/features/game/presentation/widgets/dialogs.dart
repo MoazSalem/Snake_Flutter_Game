@@ -5,7 +5,7 @@ import 'package:snake/core/models/leaderboard_item.dart';
 import 'package:snake/core/utils/assets.dart';
 import 'package:snake/core/utils/service_locator.dart';
 import 'package:snake/core/utils/constants.dart';
-import 'package:snake/features/leaderboard/presentation/view_modal/leaderboard_cubit/leaderboard_cubit.dart';
+import 'package:snake/features/leaderboard/presentation/cubit/leaderboard_cubit.dart';
 import '../view_modal/game_cubit/game_cubit.dart';
 
 TextEditingController _controller = TextEditingController();

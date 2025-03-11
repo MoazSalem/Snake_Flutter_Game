@@ -1,7 +1,9 @@
 import 'package:animated_segmented_tab_control/animated_segmented_tab_control.dart';
 import 'package:flutter/material.dart';
 import 'package:hive/hive.dart';
+import 'package:snake/core/utils/app_sizes.dart';
 import 'package:snake/core/utils/constants.dart';
+import 'package:snake/core/utils/localization.dart';
 import 'leaderboard_tile.dart';
 
 late TabController _controller;
@@ -13,7 +15,8 @@ class LeaderboardViewBody extends StatefulWidget {
   State<LeaderboardViewBody> createState() => _LeaderboardViewBodyState();
 }
 
-class _LeaderboardViewBodyState extends State<LeaderboardViewBody> with TickerProviderStateMixin {
+class _LeaderboardViewBodyState extends State<LeaderboardViewBody>
+    with TickerProviderStateMixin {
   @override
   void initState() {
     super.initState();
@@ -32,42 +35,52 @@ class _LeaderboardViewBodyState extends State<LeaderboardViewBody> with TickerPr
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      appBar: AppBar(title: const Text('Leaderboard'), centerTitle: true, toolbarHeight: 70),
+      appBar: AppBar(
+          title: const Text(AppLocalization.leaderScreenTitle),
+          centerTitle: true,
+          toolbarHeight: AppSizes.appBarSize),
       body: ListView(
         children: [
           Padding(
-            padding: const EdgeInsets.symmetric(horizontal: 12.0),
+            padding:
+                const EdgeInsets.symmetric(horizontal: AppSizes.smallerPadding),
             child: SegmentedTabControl(
               controller: _controller,
-              tabPadding: const EdgeInsets.symmetric(horizontal: 0),
-              textStyle: const TextStyle(fontSize: 12),
-              barDecoration: BoxDecoration(color: Theme.of(context).colorScheme.surface),
-              indicatorDecoration: BoxDecoration(color: Theme.of(context).colorScheme.primary),
+              textStyle: const TextStyle(fontSize: AppSizes.smallerPadding),
+              barDecoration:
+                  BoxDecoration(color: Theme.of(context).colorScheme.surface),
+              indicatorDecoration:
+                  BoxDecoration(color: Theme.of(context).colorScheme.primary),
               tabTextColor: Colors.grey,
               selectedTabTextColor: Theme.of(context).colorScheme.onPrimary,
-              height: 40,
-              tabs: const [
-                SegmentTab(label: 'Easy', flex: 2),
-                SegmentTab(label: 'Normal', flex: 2),
-                SegmentTab(label: 'Hard', flex: 2),
-                SegmentTab(label: 'Very Hard', flex: 3),
-                SegmentTab(label: 'Impossible', flex: 3),
+              height: AppSizes.leaderboardTabHeight,
+              tabs: [
+                SegmentTab(label: GameValues.difficultyNames[0], flex: 2),
+                SegmentTab(label: GameValues.difficultyNames[1], flex: 2),
+                SegmentTab(label: GameValues.difficultyNames[2], flex: 2),
+                SegmentTab(label: GameValues.difficultyNames[3], flex: 3),
+                SegmentTab(label: GameValues.difficultyNames[4], flex: 3),
               ],
             ),
           ),
-          (Hive.box('leaderBoardBox').get("${GameValues.difficultyNames[_controller.index]}List") != null &&
+          (Hive.box('leaderBoardBox').get(
+                          "${GameValues.difficultyNames[_controller.index]}List") !=
+                      null &&
                   Hive.box('leaderBoardBox')
-                      .get("${GameValues.difficultyNames[_controller.index]}List")
+                      .get(
+                          "${GameValues.difficultyNames[_controller.index]}List")
                       .isNotEmpty)
               ? ListView.builder(
                   shrinkWrap: true,
                   itemCount: Hive.box('leaderBoardBox')
-                      .get("${GameValues.difficultyNames[_controller.index]}List")!
+                      .get(
+                          "${GameValues.difficultyNames[_controller.index]}List")!
                       .length,
                   itemBuilder: (context, index) {
                     return LeaderboardTile(
-                        item: Hive.box('leaderBoardBox')
-                            .get("${GameValues.difficultyNames[_controller.index]}List")[index],
+                        item: Hive.box('leaderBoardBox').get(
+                                "${GameValues.difficultyNames[_controller.index]}List")[
+                            index],
                         position: index + 1);
                   })
               : Column(
@@ -76,7 +89,9 @@ class _LeaderboardViewBodyState extends State<LeaderboardViewBody> with TickerPr
                     SizedBox(
                         height: MediaQuery.sizeOf(context).height * 0.8,
                         child: const Center(
-                            child: Text('No Records Yet', style: TextStyle(fontSize: 20)))),
+                            child: Text(AppLocalization.noRecords,
+                                style:
+                                    TextStyle(fontSize: AppSizes.titleSize)))),
                   ],
                 ),
         ],

@@ -1,5 +1,6 @@
 class AppLocalization{
   static const String appTitle = 'Snake';
+  static const String leaderScreenTitle = 'Leaderboard';
   static const String optionScreenTitle = 'Options';
   static const String gameBoardSize = "Game Board Size";
   static const String gameControllerStyle = "Game Controller Style";
@@ -11,4 +12,5 @@ class AppLocalization{
   static const String decreaseWidth = "Decrease Width";
   static const String save = "Save";
   static const String reDefault = "Reset to Default";
+  static const String noRecords = "No Records Yet";
 }

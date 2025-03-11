@@ -9,18 +9,18 @@ import 'package:snake/core/utils/constants.dart';
 part 'leaderboard_state.dart';
 
 class LeaderboardCubit extends Cubit<LeaderboardState> {
-  LeaderboardCubit() : super(LeaderboardInitial());
+  LeaderboardCubit() : super(LeaderboardState(leaderboard: {}));
   static LeaderboardCubit get(context) => BlocProvider.of(context);
 
   leaderboardSetup() async {
     // check if there is internet connection
     final connectivityResult = await (Connectivity().checkConnectivity());
-    if (connectivityResult == ConnectivityResult.none) {
+    if (connectivityResult.first == ConnectivityResult.none) {
       debugPrint('No Internet');
     } else {
-      // get scores from firebase if there is internet connection
+      // upload score to firebase if there is internet connection
       await uploadNotUploadedScores();
-      // get scores from firebase after uploading any scores that were not uploaded
+      // get scores from firebase
       getFirebaseLeaderBoard();
     }
   }
@@ -29,7 +29,9 @@ class LeaderboardCubit extends Cubit<LeaderboardState> {
   uploadNotUploadedScores() async {
     for (var difficulty in GameValues.difficultyNames) {
       Hive.box('leaderBoardBox').get("${difficulty}List") != null
-          ? Hive.box('leaderBoardBox').get("${difficulty}List").forEach((element) async {
+          ? Hive.box('leaderBoardBox')
+              .get("${difficulty}List")
+              .forEach((element) async {
               if (element.uploaded == 0) {
                 await uploadToFirebaseLeaderBoard(item: element);
               }
@@ -91,9 +93,12 @@ class LeaderboardCubit extends Cubit<LeaderboardState> {
     Hive.box('leaderBoardBox').put('${newItem.difficulty}List', list);
   }
 
-  Future<LeaderboardItem> uploadToFirebaseLeaderBoard({required LeaderboardItem item}) async {
+  Future<LeaderboardItem> uploadToFirebaseLeaderBoard(
+      {required LeaderboardItem item}) async {
     try {
-      await FirebaseFirestore.instance.collection("${item.difficulty}List").add({
+      await FirebaseFirestore.instance
+          .collection("${item.difficulty}List")
+          .add({
         'name': item.name,
         'difficulty': item.difficulty,
         'score': item.score,
