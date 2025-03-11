@@ -2,7 +2,7 @@ import 'package:flutter/material.dart';
 import 'widgets/options_view_body.dart';
 
 class OptionsView extends StatelessWidget {
-  const OptionsView({Key? key}) : super(key: key);
+  const OptionsView({super.key});
 
   @override
   Widget build(BuildContext context) {

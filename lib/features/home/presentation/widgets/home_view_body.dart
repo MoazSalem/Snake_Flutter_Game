@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:snake/core/utils/service_locator.dart';
-import 'package:snake/features/options/presentation/view_modal/options_cubit/options_cubit.dart';
+import 'package:snake/features/options/presentation/cubit/options_cubit.dart';
 
 class HomeViewBody extends StatefulWidget {
   const HomeViewBody({Key? key}) : super(key: key);

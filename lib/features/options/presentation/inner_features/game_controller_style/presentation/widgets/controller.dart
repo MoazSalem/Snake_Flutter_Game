@@ -4,12 +4,13 @@ import 'package:snake/core/utils/styles.dart';
 
 class Controller extends StatelessWidget {
   final int style;
-  const Controller({Key? key, required this.style}) : super(key: key);
+  const Controller({super.key, required this.style});
 
   @override
   Widget build(BuildContext context) {
     return Padding(
-      padding: const EdgeInsets.only(left: 24.0, right: 24.0, bottom: 24.0, top: 6.0),
+      padding: const EdgeInsets.only(
+          left: 24.0, right: 24.0, bottom: 24.0, top: 6.0),
       child: SizedBox(
         height: MediaQuery.sizeOf(context).height * 0.15,
         child: Row(
@@ -27,8 +28,10 @@ class Controller extends StatelessWidget {
                     child: ElevatedButton(
                       onPressed: () {},
                       style: Styles.flatButton.copyWith(
-                          backgroundColor: MaterialStateProperty.all<Color>(
-                              getIt.get<ColorScheme>().background.withOpacity(0.7))),
+                          backgroundColor: WidgetStateProperty.all<Color>(getIt
+                              .get<ColorScheme>()
+                              .surface
+                              .withValues(alpha: 0.7))),
                       child: const Icon(Icons.arrow_upward),
                     ),
                   )
@@ -40,8 +43,11 @@ class Controller extends StatelessWidget {
                           child: ElevatedButton(
                             onPressed: () {},
                             style: Styles.flatButton.copyWith(
-                                backgroundColor: MaterialStateProperty.all<Color>(
-                                    getIt.get<ColorScheme>().background.withOpacity(0.7))),
+                                backgroundColor: WidgetStateProperty.all<Color>(
+                                    getIt
+                                        .get<ColorScheme>()
+                                        .surface
+                                        .withValues(alpha: 0.7))),
                             child: const Icon(Icons.arrow_upward),
                           ),
                         ),
@@ -49,8 +55,11 @@ class Controller extends StatelessWidget {
                           child: ElevatedButton(
                             onPressed: () {},
                             style: Styles.flatButton.copyWith(
-                                backgroundColor: MaterialStateProperty.all<Color>(
-                                    getIt.get<ColorScheme>().background.withOpacity(0.4))),
+                                backgroundColor: WidgetStateProperty.all<Color>(
+                                    getIt
+                                        .get<ColorScheme>()
+                                        .surface
+                                        .withValues(alpha: 0.4))),
                             child: const Icon(Icons.arrow_downward),
                           ),
                         ),
@@ -62,8 +71,10 @@ class Controller extends StatelessWidget {
                     child: ElevatedButton(
                       onPressed: () {},
                       style: Styles.flatButton.copyWith(
-                          backgroundColor: MaterialStateProperty.all<Color>(
-                              getIt.get<ColorScheme>().background.withOpacity(0.4))),
+                          backgroundColor: WidgetStateProperty.all<Color>(getIt
+                              .get<ColorScheme>()
+                              .surface
+                              .withValues(alpha: 0.4))),
                       child: const Icon(Icons.arrow_downward),
                     ),
                   )

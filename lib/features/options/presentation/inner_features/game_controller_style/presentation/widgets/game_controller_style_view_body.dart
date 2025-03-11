@@ -1,11 +1,11 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:snake/core/utils/service_locator.dart';
-import 'package:snake/features/options/presentation/view_modal/options_cubit/options_cubit.dart';
+import 'package:snake/features/options/presentation/cubit/options_cubit.dart';
 import 'controller.dart';
 
 class GameControllerStyleViewBody extends StatelessWidget {
-  const GameControllerStyleViewBody({Key? key}) : super(key: key);
+  const GameControllerStyleViewBody({super.key});
 
   @override
   Widget build(BuildContext context) {
@@ -20,7 +20,7 @@ class GameControllerStyleViewBody extends StatelessWidget {
                   ListTile(
                     title: const Text("Style 1"),
                     trailing: Radio(
-                        value: getIt.get<OptionsCubit>().controllerStyle,
+                        value: getIt.get<OptionsCubit>().state.controllerStyle,
                         groupValue: 1,
                         onChanged: (value) {}),
                   ),
@@ -35,7 +35,7 @@ class GameControllerStyleViewBody extends StatelessWidget {
                   ListTile(
                     title: const Text("Style 2"),
                     trailing: Radio(
-                        value: getIt.get<OptionsCubit>().controllerStyle,
+                        value: getIt.get<OptionsCubit>().state.controllerStyle,
                         groupValue: 2,
                         onChanged: (value) {}),
                   ),

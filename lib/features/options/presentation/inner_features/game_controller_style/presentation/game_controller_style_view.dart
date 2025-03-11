@@ -2,7 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:snake/features/options/presentation/inner_features/game_controller_style/presentation/widgets/game_controller_style_view_body.dart';
 
 class GameControllerStyleView extends StatelessWidget {
-  const GameControllerStyleView({Key? key}) : super(key: key);
+  const GameControllerStyleView({super.key});
 
   @override
   Widget build(BuildContext context) {

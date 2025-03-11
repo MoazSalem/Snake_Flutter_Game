@@ -5,7 +5,7 @@ import 'package:firebase_core/firebase_core.dart';
 import 'firebase_options.dart';
 import 'package:snake/core/models/leaderboard_item.dart';
 import 'package:snake/core/routes.dart';
-import 'package:snake/features/options/presentation/view_modal/options_cubit/options_cubit.dart';
+import 'package:snake/features/options/presentation/cubit/options_cubit.dart';
 import 'package:snake/features/leaderboard/presentation/view_modal/leaderboard_cubit/leaderboard_cubit.dart';
 
 void main() async {

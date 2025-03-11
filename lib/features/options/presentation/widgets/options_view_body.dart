@@ -2,7 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:snake/features/options/presentation/widgets/options_tile.dart';
 
 class OptionsViewBody extends StatelessWidget {
-  const OptionsViewBody({Key? key}) : super(key: key);
+  const OptionsViewBody({super.key});
 
   @override
   Widget build(BuildContext context) {

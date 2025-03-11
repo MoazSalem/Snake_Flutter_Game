@@ -1,10 +1,10 @@
 import 'package:flutter/material.dart';
 import 'package:snake/core/utils/styles.dart';
-import 'package:snake/features/options/presentation/view_modal/options_cubit/options_cubit.dart';
+import 'package:snake/features/options/presentation/cubit/options_cubit.dart';
 
 class BoardSizeController extends StatelessWidget {
   final OptionsCubit c;
-  const BoardSizeController({Key? key, required this.c}) : super(key: key);
+  const BoardSizeController({super.key, required this.c});
 
   @override
   Widget build(BuildContext context) {
