@@ -3,7 +3,7 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:snake/core/models/game_board.dart';
 import 'package:snake/core/utils/app_sizes.dart';
 import 'package:snake/core/utils/service_locator.dart';
-import 'package:snake/features/game/presentation/view_modal/game_cubit/game_cubit.dart';
+import 'package:snake/features/game/presentation/cubit/game_cubit.dart';
 
 class GamePoint extends StatelessWidget {
   final GameBoard gameBoard;

@@ -3,7 +3,7 @@ import 'package:hive/hive.dart';
 import 'package:snake/core/utils/app_sizes.dart';
 import 'package:snake/core/utils/service_locator.dart';
 import 'package:snake/core/utils/styles.dart';
-import '../view_modal/game_cubit/game_cubit.dart';
+import 'package:snake/features/game/presentation/cubit/game_cubit.dart';
 
 class Controller extends StatelessWidget {
   const Controller({super.key});

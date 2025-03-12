@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
-import '../view_modal/game_cubit/game_cubit.dart';
+import 'package:snake/features/game/presentation/cubit/game_cubit.dart';
 import 'dialogs.dart';
 import 'score_widget.dart';
 import 'game_board_view.dart';

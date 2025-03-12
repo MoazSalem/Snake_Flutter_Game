@@ -2,7 +2,8 @@ import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:snake/core/utils/localization.dart';
 import 'package:snake/core/utils/service_locator.dart';
-import '../view_modal/game_cubit/game_cubit.dart';
+import 'package:snake/features/game/presentation/cubit/game_cubit.dart';
+
 
 class ScoreWidget extends StatelessWidget {
   const ScoreWidget({super.key});

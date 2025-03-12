@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'data/screen_arguments.dart';
-import 'view_modal/game_cubit/game_cubit.dart';
+import 'cubit/game_cubit.dart';
 import 'widgets/game_view_body.dart';
 
 class GameView extends StatefulWidget {
