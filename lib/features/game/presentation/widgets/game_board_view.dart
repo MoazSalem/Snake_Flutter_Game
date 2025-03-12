@@ -15,10 +15,10 @@ class GameBoardView extends StatefulWidget {
 
 class _GameBoardViewState extends State<GameBoardView> {
   late GameCubit c;
-  int width = Hive.box('optionsBox')
-      .get('boardWidth', defaultValue: (getIt.get<Size>().width * 0.036).toInt());
-  int height = Hive.box('optionsBox')
-      .get('boardHeight', defaultValue: ((getIt.get<Size>().width * 0.036) * 1.7).toInt());
+  int width = Hive.box('optionsBox').get('boardWidth',
+      defaultValue: (getIt.get<Size>().width * 0.036).toInt());
+  int height = Hive.box('optionsBox').get('boardHeight',
+      defaultValue: ((getIt.get<Size>().width * 0.036) * 1.7).toInt());
 
   @override
   void initState() {
@@ -31,28 +31,26 @@ class _GameBoardViewState extends State<GameBoardView> {
   @override
   void dispose() {
     super.dispose();
-    c.game = false;
+    c.endGame();
     getIt.unregister<GameCubit>();
   }
 
   @override
   Widget build(BuildContext context) {
-    return BlocBuilder<GameCubit, GameState>(
-      builder: (context, state) {
-        return GridView.builder(
-            padding: const EdgeInsets.symmetric(horizontal: AppSizes.padding, vertical: AppSizes.smallerPadding),
-            itemCount: c.gameBoard.width * c.gameBoard.height,
-            shrinkWrap: true,
-            physics: const NeverScrollableScrollPhysics(),
-            itemBuilder: (BuildContext context, int index) {
-              return Padding(
-                  padding: EdgeInsets.all(c.gameBoard.height / c.gameBoard.width),
-                  child: GamePoint(gameBoard: c.gameBoard, index: index));
-            },
-            gridDelegate: SliverGridDelegateWithFixedCrossAxisCount(
-              crossAxisCount: c.gameBoard.width,
-            ));
-      },
-    );
+    return GridView.builder(
+        padding: const EdgeInsets.symmetric(
+            horizontal: AppSizes.padding, vertical: AppSizes.smallerPadding),
+        itemCount: c.state.gameBoard.width * c.state.gameBoard.height,
+        shrinkWrap: true,
+        physics: const NeverScrollableScrollPhysics(),
+        itemBuilder: (BuildContext context, int index) {
+          return Padding(
+              padding: EdgeInsets.all(
+                  c.state.gameBoard.width / c.state.gameBoard.height),
+              child: GamePoint(gameBoard: c.state.gameBoard, index: index));
+        },
+        gridDelegate: SliverGridDelegateWithFixedCrossAxisCount(
+          crossAxisCount: c.state.gameBoard.width,
+        ));
   }
 }

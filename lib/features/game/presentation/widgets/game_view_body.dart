@@ -7,13 +7,13 @@ import 'game_board_view.dart';
 import 'controller.dart';
 
 class GameViewBody extends StatelessWidget {
-  const GameViewBody({Key? key}) : super(key: key);
+  const GameViewBody({super.key});
 
   @override
   Widget build(BuildContext context) {
     return BlocListener<GameCubit, GameState>(
       listener: (context, state) {
-        state is GameOver ? gameOver(context) : null;
+        state.game == false ? gameOver(context) : null;
       },
       child: const SafeArea(
         child: Column(

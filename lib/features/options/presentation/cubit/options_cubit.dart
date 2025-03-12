@@ -21,8 +21,8 @@ class OptionsCubit extends Cubit<OptionsState> {
 
   resetSize() {
     emit(state.copyWith(
-      boardHeight: (getIt.get<Size>().width * 0.036).toInt(),
-      boardWidth: ((getIt.get<Size>().width * 0.036) * 1.7).toInt(),
+      boardWidth: (getIt.get<Size>().width * 0.036).toInt(),
+      boardHeight: ((getIt.get<Size>().width * 0.036) * 1.7).toInt(),
     ));
   }
 

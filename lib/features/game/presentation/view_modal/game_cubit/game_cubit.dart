@@ -1,6 +1,4 @@
-import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
-import 'package:flutter/cupertino.dart';
 import 'package:just_audio/just_audio.dart';
 import 'package:snake/core/models/food.dart';
 import 'package:snake/core/models/game_board.dart';
@@ -12,116 +10,131 @@ import 'package:snake/core/utils/constants.dart';
 part 'game_state.dart';
 
 class GameCubit extends Cubit<GameState> {
-  GameCubit() : super(GameInitial());
+  GameCubit()
+      : super(GameState(
+          gameBoard: GameBoard(width: 10, height: 10),
+          snake: Snake(boardWidth: 10, boardHeight: 10),
+          food: Food(boardWidth: 10, boardHeight: 10),
+          specialFood: null,
+          game: false,
+          score: 0,
+          difficultyIndex: 0,
+          difficultyDuration: Duration(seconds: 0),
+          counter: 0,
+          highScore: false,
+          currentDirection: 'up',
+          upcomingDirection: 'up',
+        ));
   static GameCubit get(context) => BlocProvider.of(context);
 
-  late GameBoard gameBoard;
-  late Snake snake;
-  late Food food;
-  Food? specialFood;
-  late bool game;
-  late int score;
-  late int difficultyIndex;
-  late Duration difficultyDuration;
-  late int counter;
-  bool highScore = false;
-  String currentDirection = 'up';
-  String upcomingDirection = 'up';
-
   setDifficulty({required int difficultyType}) {
-    difficultyIndex = difficultyType;
-    difficultyDuration = Duration(milliseconds: GameValues.difficultySpeeds[difficultyType]);
+    emit(state.copyWith(
+        difficultyIndex: difficultyType,
+        difficultyDuration: Duration(
+            milliseconds: GameValues.difficultySpeeds[difficultyType])));
   }
 
   Future<void> startGame({required int width, required int height}) async {
     // create game board, snake and food
-    gameBoard = GameBoard(width: width, height: height);
-    snake = Snake(boardHeight: gameBoard.height, boardWidth: gameBoard.width);
-    food = Food(boardWidth: gameBoard.width, boardHeight: gameBoard.height);
-    score = 0;
-    counter = GameValues.specialCounter + (10 * difficultyIndex);
+    emit(state.copyWith(
+      gameBoard: GameBoard(width: width, height: height),
+      snake: Snake(boardHeight: height, boardWidth: width),
+      food: Food(boardHeight: height, boardWidth: width),
+      score: 0,
+      counter: GameValues.specialCounter + (10 * state.difficultyIndex),
+      game: true,
+    ));
     // put snake head and body on the board
     draw();
-    // start the game loop
-    game = true;
-    emit(GameStart());
+    gameLoop();
+  }
+
+  Future<void> gameLoop() async {
     // This is the game loop that runs until the game is over
-    while (game == true) {
+    while (state.game == true) {
       // check if the special food counter is over
-      checkCounter(count: counter--);
+      checkCounter();
       // Something fun happens when you reach the high score
-      highScore
-          ? null
-          : score > GameValues.highScore
-              ? {highScore = true, playAudio(audio: AssetsData.easterEggAudio)}
-              : null;
+      checkHighScore();
       // check if the snake ate the golden apple
-      specialFood != null
-          ? specialFood!.checkEaten(snake.headPoint)
-              ? {specialFoodEaten(), emit(GameFoodEaten())}
-              : null
-          : null;
+      isGoldenEaten();
       // move the snake
-      snake.move(direction: currentDirection, gameBoard: gameBoard);
+      state.snake
+          .move(direction: state.currentDirection, gameBoard: state.gameBoard);
       // check if the snake ate the food
-      food.checkEaten(snake.headPoint) ? {foodEaten(), emit(GameFoodEaten())} : null;
+      state.food.checkEaten(state.snake.headPoint)
+          ? {foodEaten(), emit(state)}
+          : null;
       // check if the snake hit itself
-      snake.checkCollision(gameBoard: gameBoard) ? {game = false, emit(GameOver())} : null;
+      state.snake.checkCollision(gameBoard: state.gameBoard)
+          ? {endGame()}
+          : null;
       draw();
-      emit(GameNextPosition());
       // This delay determines the games speed
-      await Future.delayed(difficultyDuration);
-      currentDirection != upcomingDirection ? currentDirection = upcomingDirection : null;
+      await Future.delayed(state.difficultyDuration);
+      state.currentDirection != state.upcomingDirection
+          ? emit(state.copyWith(currentDirection: state.upcomingDirection))
+          : null;
     }
+  }
+
+  void endGame() {
+    emit(state.copyWith(game: false));
   }
 
   void draw() {
-    // put snake head and body on the board
-    for (var element in gameBoard.grid) {
+    // fill board with 0
+    for (var element in state.gameBoard.grid) {
       element.fillRange(0, element.length, 0);
     }
-    // draw food on the board
-    specialFood != null
-        ? gameBoard.grid[specialFood!.position.yCoordinate][specialFood!.position.xCoordinate] = 4
+    // draw snake head with 3 value, snake body has 2 value, food is 1, golden apples are 4
+    state.specialFood != null
+        ? state.gameBoard.grid[state.specialFood!.position.yCoordinate]
+            [state.specialFood!.position.xCoordinate] = 4
         : null;
-    gameBoard.grid[food.position.yCoordinate][food.position.xCoordinate] = 1;
+    state.gameBoard.grid[state.food.position.yCoordinate]
+        [state.food.position.xCoordinate] = 1;
     // draw snake head on the board
-    gameBoard.grid[snake.headPoint.yCoordinate][snake.headPoint.xCoordinate] = 3;
+    state.gameBoard.grid[state.snake.headPoint.yCoordinate]
+        [state.snake.headPoint.xCoordinate] = 3;
     // draw snake body on the board
-    for (Point point in snake.body) {
-      gameBoard.grid[point.yCoordinate][point.xCoordinate] = 2;
+    for (Point point in state.snake.body) {
+      state.gameBoard.grid[point.yCoordinate][point.xCoordinate] = 2;
     }
-    emit(GameNextPosition());
+    emit(state);
   }
 
   Future<void> foodEaten() async {
+    // increase snake length
+    state.snake.insertPoint(point: state.snake.body.last);
     // play eat food sound
     playAudio(audio: AssetsData.eatAudio);
-    // add a new point to the snake's body
-    snake.body.add(snake.body.last);
-    // generate a new food
+    // generate new food point
     generateFood();
     // increase the score
-    score += (4 + difficultyIndex * 4);
+    emit(state.copyWith(
+      score: state.score + (4 + state.difficultyIndex * 4),
+    ));
   }
 
   void specialFoodEaten() {
-    // reset the special food
-    specialFood = null;
+    emit(state.copyWith(counter: 0));
+    // increase snake length
+    state.snake.insertPoint(point: state.snake.body.last);
     // play eat food sound
     playAudio(audio: AssetsData.goldenEatAudio);
     // not sure if this is necessary
     AudioPlayer().dispose();
-    // reset the counter
-    counter = GameValues.specialCounter + (10 * difficultyIndex);
-    // add a new point to the snake's body
-    snake.body.add(snake.body.last);
     // increase the score
-    score += (counter + difficultyIndex * 8);
+    emit(state.copyWith(
+        score: state.score + (state.counter + state.difficultyIndex * 8),
+        counter: GameValues.specialCounter + (10 * state.difficultyIndex),
+        specialFood: null));
   }
 
-  checkCounter({required int count}) {
-    switch (count) {
+  checkCounter() {
+// decrease counter
+    switch (state.counter) {
       case const (GameValues.specialCounter ~/ 3):
         {
           playAudio(audio: AssetsData.goldenAppearAudio);
@@ -130,21 +143,45 @@ class GameCubit extends Cubit<GameState> {
         }
       case 0:
         {
-          specialFood = null;
           playAudio(audio: AssetsData.goldenDisappearAudio);
-          counter = GameValues.specialCounter + (10 * difficultyIndex);
+          emit(state.copyWith(
+            specialFood: null,
+            counter: GameValues.specialCounter + (10 * state.difficultyIndex),
+          ));
           break;
         }
     }
+    emit(state.copyWith(counter: state.counter - 1));
+  }
+
+  checkHighScore() {
+    state.highScore
+        ? null
+        : state.score > GameValues.highScore
+            ? {
+                emit(state.copyWith(highScore: true)),
+                playAudio(audio: AssetsData.easterEggAudio)
+              }
+            : null;
+  }
+
+  isGoldenEaten() {
+    state.specialFood != null
+        ? state.specialFood!.checkEaten(state.snake.headPoint)
+            ? {specialFoodEaten(), emit(state)}
+            : null
+        : null;
   }
 
   generateFood() {
     // generate new food
-    Food tempFood = Food(boardWidth: gameBoard.width, boardHeight: gameBoard.height);
-    switch (gameBoard.grid[tempFood.position.yCoordinate][tempFood.position.xCoordinate]) {
+    Food tempFood = Food(
+        boardWidth: state.gameBoard.width, boardHeight: state.gameBoard.height);
+    switch (state.gameBoard.grid[tempFood.position.yCoordinate]
+        [tempFood.position.xCoordinate]) {
       case 0:
         {
-          food = tempFood;
+          emit(state.copyWith(food: tempFood));
           break;
         }
       default:
@@ -157,11 +194,13 @@ class GameCubit extends Cubit<GameState> {
 
   generateSpecialFood() {
     // generate new food
-    Food tempFood = Food(boardWidth: gameBoard.width, boardHeight: gameBoard.height);
-    switch (gameBoard.grid[tempFood.position.yCoordinate][tempFood.position.xCoordinate]) {
+    Food tempFood = Food(
+        boardWidth: state.gameBoard.width, boardHeight: state.gameBoard.height);
+    switch (state.gameBoard.grid[tempFood.position.yCoordinate]
+        [tempFood.position.xCoordinate]) {
       case 0:
         {
-          specialFood = tempFood;
+          emit(state.copyWith(specialFood: tempFood));
           break;
         }
       default:
@@ -184,33 +223,33 @@ class GameCubit extends Cubit<GameState> {
     switch (nextDirection) {
       case 'up':
         {
-          if (currentDirection != 'down') {
-            upcomingDirection = nextDirection;
+          if (state.currentDirection != 'down') {
+            emit(state.copyWith(upcomingDirection: nextDirection));
           }
           break;
         }
       case 'down':
         {
-          if (currentDirection != 'up') {
-            upcomingDirection = nextDirection;
+          if (state.currentDirection != 'up') {
+            emit(state.copyWith(upcomingDirection: nextDirection));
           }
           break;
         }
       case 'left':
         {
-          if (currentDirection != 'right') {
-            upcomingDirection = nextDirection;
+          if (state.currentDirection != 'right') {
+            emit(state.copyWith(upcomingDirection: nextDirection));
           }
           break;
         }
       case 'right':
         {
-          if (currentDirection != 'left') {
-            upcomingDirection = nextDirection;
+          if (state.currentDirection != 'left') {
+            emit(state.copyWith(upcomingDirection: nextDirection));
           }
           break;
         }
     }
-    emit(GameChangeControl());
+    emit(state);
   }
 }

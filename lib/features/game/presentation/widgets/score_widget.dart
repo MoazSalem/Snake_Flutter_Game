@@ -9,19 +9,22 @@ class ScoreWidget extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return BlocBuilder<GameCubit, GameState>(
-  builder: (context, state) {
-    return Row(
-      mainAxisAlignment: MainAxisAlignment.center,
-      children: [
-        const Text(AppLocalization.score),
-        Text(
-          getIt.get<GameCubit>().score.toString(),
-          style: TextStyle(color: getIt.get<ColorScheme>().primary),
-        ),
-      ],
+    return BlocSelector<GameCubit, GameState, int>(
+      selector: (state) {
+        return state.score;
+      },
+      builder: (context, state) {
+        return Row(
+          mainAxisAlignment: MainAxisAlignment.center,
+          children: [
+            const Text(AppLocalization.score),
+            Text(
+              getIt.get<GameCubit>().state.score.toString(),
+              style: TextStyle(color: getIt.get<ColorScheme>().primary),
+            ),
+          ],
+        );
+      },
     );
-  },
-);
   }
 }

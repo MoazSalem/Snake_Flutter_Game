@@ -1,7 +1,9 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:snake/core/models/game_board.dart';
 import 'package:snake/core/utils/app_sizes.dart';
 import 'package:snake/core/utils/service_locator.dart';
+import 'package:snake/features/game/presentation/view_modal/game_cubit/game_cubit.dart';
 
 class GamePoint extends StatelessWidget {
   final GameBoard gameBoard;
@@ -10,10 +12,15 @@ class GamePoint extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    return BlocBuilder<GameCubit, GameState>(
+  builder: (context, state) {
     return Container(
         width: AppSizes.screenDotSize,
         height: AppSizes.screenDotSize,
-        color: getColor(index % gameBoard.width, index ~/ gameBoard.width, gameBoard));
+        color: getColor(
+            index % gameBoard.width, index ~/ gameBoard.width, gameBoard));
+  },
+);
   }
 }
 

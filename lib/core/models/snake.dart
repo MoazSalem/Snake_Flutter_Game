@@ -11,7 +11,13 @@ class Snake {
     headPoint = generateRandomPosition(boardWidth, boardHeight);
     body.add(Point(
         xCoordinate: headPoint.xCoordinate,
-        yCoordinate: (headPoint.yCoordinate + 1 == boardHeight) ? 0 : headPoint.yCoordinate + 1));
+        yCoordinate: (headPoint.yCoordinate + 1 == boardHeight)
+            ? 0
+            : headPoint.yCoordinate + 1));
+  }
+
+  void insertPoint({required Point point}) {
+    body.add(point);
   }
 
   void move({required String direction, required GameBoard gameBoard}) {
@@ -25,31 +31,35 @@ class Snake {
         {
           headPoint = Point(
               xCoordinate: headPoint.xCoordinate,
-              yCoordinate:
-                  (headPoint.yCoordinate == 0) ? gameBoard.height - 1 : headPoint.yCoordinate - 1);
+              yCoordinate: (headPoint.yCoordinate == 0)
+                  ? gameBoard.height - 1
+                  : headPoint.yCoordinate - 1);
           break;
         }
       case 'down':
         {
           headPoint = Point(
               xCoordinate: headPoint.xCoordinate,
-              yCoordinate:
-                  (headPoint.yCoordinate == gameBoard.height - 1) ? 0 : headPoint.yCoordinate + 1);
+              yCoordinate: (headPoint.yCoordinate == gameBoard.height - 1)
+                  ? 0
+                  : headPoint.yCoordinate + 1);
           break;
         }
       case 'left':
         {
           headPoint = Point(
-              xCoordinate:
-                  (headPoint.xCoordinate == 0) ? gameBoard.width - 1 : headPoint.xCoordinate - 1,
+              xCoordinate: (headPoint.xCoordinate == 0)
+                  ? gameBoard.width - 1
+                  : headPoint.xCoordinate - 1,
               yCoordinate: headPoint.yCoordinate);
           break;
         }
       case 'right':
         {
           headPoint = Point(
-              xCoordinate:
-                  (headPoint.xCoordinate == gameBoard.width - 1) ? 0 : headPoint.xCoordinate + 1,
+              xCoordinate: (headPoint.xCoordinate == gameBoard.width - 1)
+                  ? 0
+                  : headPoint.xCoordinate + 1,
               yCoordinate: headPoint.yCoordinate);
           break;
         }
