@@ -100,7 +100,7 @@ jobs:
           token: ${{ secrets.TOKEN }}
 
       - name: Upload build artifacts to workflow
-        uses: actions/upload-artifact@v3
+        uses: actions/upload-artifact@v4
         with:
           name: v${{ env.app_ver }}
           path: ${{ env.ARTIFACTS_PATH }}/*.apk
