@@ -12,39 +12,33 @@ class GamePoint extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return BlocBuilder<GameCubit, GameState>(
-  builder: (context, state) {
-    return Container(
-        width: AppSizes.screenDotSize,
-        height: AppSizes.screenDotSize,
-        color: getColor(
-            index % gameBoard.width, index ~/ gameBoard.width, gameBoard));
-  },
-);
+    final int x = index % gameBoard.width;
+    final int y = index ~/ gameBoard.width;
+
+    return BlocSelector<GameCubit, GameState, int>(
+      selector: (state) => state.gameBoard.grid[y][x],
+      builder: (context, cellValue) {
+        return Container(
+          width: AppSizes.screenDotSize,
+          height: AppSizes.screenDotSize,
+          color: getColor(x, y, cellValue),
+        );
+      },
+    );
   }
 }
 
-Color getColor(int x, int y, GameBoard gameBoard) {
-  switch (gameBoard.grid[y][x]) {
+Color getColor(int x, int y, int cellValue) {
+  switch (cellValue) {
     case 1:
-      {
-        return Colors.redAccent;
-      }
+      return Colors.redAccent;
     case 2:
-      {
-        return getIt.get<ColorScheme>().secondary;
-      }
+      return getIt.get<ColorScheme>().secondary;
     case 3:
-      {
-        return getIt.get<ColorScheme>().primary;
-      }
+      return getIt.get<ColorScheme>().primary;
     case 4:
-      {
-        return Colors.amberAccent;
-      }
+      return Colors.amberAccent;
     default:
-      {
-        return getIt.get<ColorScheme>().onSecondary.withValues(alpha: 0.6);
-      }
+      return getIt.get<ColorScheme>().onSecondary.withValues(alpha: 0.6);
   }
 }
