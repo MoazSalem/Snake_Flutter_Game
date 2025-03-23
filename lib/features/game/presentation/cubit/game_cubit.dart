@@ -1,4 +1,5 @@
 import 'dart:async';
+import 'package:equatable/equatable.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:just_audio/just_audio.dart';
 import 'package:snake/core/models/food.dart';
@@ -95,25 +96,29 @@ class GameCubit extends Cubit<GameState> {
   }
 
   void draw() {
-    // fill board with 0
-    for (var element in state.gameBoard.grid) {
-      element.fillRange(0, element.length, 0);
-    }
+    // Create a new grid filled with zeros
+    List<List<int>> newGrid = List.generate(
+      state.gameBoard.height,
+      (_) => List.filled(state.gameBoard.width, 0),
+    );
+
     // draw snake head with 3 value, snake body has 2 value, food is 1, golden apples are 4
-    state.specialFood != null
-        ? state.gameBoard.grid[state.specialFood!.position.yCoordinate]
-            [state.specialFood!.position.xCoordinate] = 4
-        : null;
-    state.gameBoard.grid[state.food.position.yCoordinate]
-        [state.food.position.xCoordinate] = 1;
-    // draw snake head on the board
-    state.gameBoard.grid[state.snake.headPoint.yCoordinate]
-        [state.snake.headPoint.xCoordinate] = 3;
-    // draw snake body on the board
-    for (Point point in state.snake.body) {
-      state.gameBoard.grid[point.yCoordinate][point.xCoordinate] = 2;
+    if (state.specialFood != null) {
+      newGrid[state.specialFood!.position.yCoordinate]
+          [state.specialFood!.position.xCoordinate] = 4;
     }
-    emit(state);
+
+    newGrid[state.food.position.yCoordinate][state.food.position.xCoordinate] =
+        1;
+    newGrid[state.snake.headPoint.yCoordinate]
+        [state.snake.headPoint.xCoordinate] = 3;
+
+    for (Point point in state.snake.body) {
+      newGrid[point.yCoordinate][point.xCoordinate] = 2;
+    }
+
+    // Update the game board with the new grid
+    emit(state.copyWith(gameBoard: state.gameBoard.copyWith(grid: newGrid)));
   }
 
   Future<void> foodEaten() async {
@@ -263,6 +268,5 @@ class GameCubit extends Cubit<GameState> {
           break;
         }
     }
-    emit(state);
   }
 }

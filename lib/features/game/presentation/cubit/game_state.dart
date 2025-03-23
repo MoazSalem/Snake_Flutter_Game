@@ -1,6 +1,6 @@
 part of 'game_cubit.dart';
 
-class GameState {
+class GameState extends Equatable {
   final GameBoard gameBoard;
   final Snake snake;
   final Food food;
@@ -60,4 +60,20 @@ class GameState {
       upcomingDirection: upcomingDirection ?? this.upcomingDirection,
     );
   }
+
+  @override
+  List<Object?> get props => [
+        gameBoard,
+        snake,
+        food,
+        specialFood,
+        game,
+        score,
+        difficultyIndex,
+        difficultyDuration,
+        counter,
+        highScore,
+        currentDirection,
+        upcomingDirection
+      ];
 }
