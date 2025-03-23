@@ -26,6 +26,15 @@ class GameCubit extends Cubit<GameState> {
           upcomingDirection: 'up',
         ));
   static GameCubit get(context) => BlocProvider.of(context);
+  final Map<String, AudioPlayer> _audioPlayers = {};
+
+  @override
+  Future<void> close() async {
+    for (final player in _audioPlayers.values) {
+      await player.dispose();
+    }
+    return super.close();
+  }
 
   setDifficulty({required int difficultyType}) {
     emit(state.copyWith(
@@ -123,8 +132,6 @@ class GameCubit extends Cubit<GameState> {
     state.snake.insertPoint(point: state.snake.body.last);
     // play eat food sound
     playAudio(audio: AssetsData.goldenEatAudio);
-    // not sure if this is necessary
-    AudioPlayer().dispose();
     // increase the score
     emit(state.copyWith(
         score: state.score + (state.counter + state.difficultyIndex * 8),
@@ -212,10 +219,13 @@ class GameCubit extends Cubit<GameState> {
   }
 
   playAudio({required String audio}) {
-    AudioPlayer player = AudioPlayer(handleAudioSessionActivation: false);
-    player.setAsset(audio, preload: true).then((value) {
-      player.play().then((value) => player.dispose());
-    });
+    // create an audio player for each audio
+    if (!_audioPlayers.containsKey(audio)) {
+      _audioPlayers[audio] = AudioPlayer(handleAudioSessionActivation: false);
+      _audioPlayers[audio]!.setAsset(audio, preload: true);
+    }
+    _audioPlayers[audio]!.seek(Duration.zero);
+    _audioPlayers[audio]!.play();
   }
 
   void changeDirection(String nextDirection) {
