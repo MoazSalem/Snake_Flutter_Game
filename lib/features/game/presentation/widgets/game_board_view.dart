@@ -32,6 +32,7 @@ class _GameBoardViewState extends State<GameBoardView> {
   void dispose() {
     super.dispose();
     c.endGame();
+    c.close();
     getIt.unregister<GameCubit>();
   }
 

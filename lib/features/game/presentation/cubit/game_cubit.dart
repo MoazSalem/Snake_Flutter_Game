@@ -1,3 +1,4 @@
+import 'dart:async';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:just_audio/just_audio.dart';
 import 'package:snake/core/models/food.dart';
@@ -27,9 +28,11 @@ class GameCubit extends Cubit<GameState> {
         ));
   static GameCubit get(context) => BlocProvider.of(context);
   final Map<String, AudioPlayer> _audioPlayers = {};
+  late Timer _gameLoopTimer;
 
   @override
   Future<void> close() async {
+    _gameLoopTimer.cancel();
     for (final player in _audioPlayers.values) {
       await player.dispose();
     }
@@ -55,35 +58,35 @@ class GameCubit extends Cubit<GameState> {
     ));
     // put snake head and body on the board
     draw();
-    gameLoop();
+    // The Game Timer, The delay determines the games speed
+    _gameLoopTimer =
+        Timer.periodic(state.difficultyDuration, (_) => gameLoop());
   }
 
   Future<void> gameLoop() async {
-    // This is the game loop that runs until the game is over
-    while (state.game == true) {
-      // check if the special food counter is over
-      checkCounter();
-      // Something fun happens when you reach the high score
-      checkHighScore();
-      // check if the snake ate the golden apple
-      isGoldenEaten();
-      // move the snake
-      state.snake
-          .move(direction: state.currentDirection, gameBoard: state.gameBoard);
-      // check if the snake ate the food
-      state.food.checkEaten(state.snake.headPoint)
-          ? {foodEaten(), emit(state)}
-          : null;
-      // check if the snake hit itself
-      state.snake.checkCollision(gameBoard: state.gameBoard)
-          ? {endGame()}
-          : null;
-      draw();
-      // This delay determines the games speed
-      await Future.delayed(state.difficultyDuration);
-      state.currentDirection != state.upcomingDirection
-          ? emit(state.copyWith(currentDirection: state.upcomingDirection))
-          : null;
+    // Stop the timer when the game is over
+    if (state.game == false) {
+      _gameLoopTimer.cancel();
+      return;
+    }
+    // check if the special food counter is over
+    checkCounter();
+    // Something fun happens when you reach the high score
+    checkHighScore();
+    // check if the snake ate the golden apple
+    isGoldenEaten();
+    // move the snake
+    state.snake
+        .move(direction: state.currentDirection, gameBoard: state.gameBoard);
+    // check if the snake ate the food
+    state.food.checkEaten(state.snake.headPoint)
+        ? {foodEaten(), emit(state)}
+        : null;
+    // check if the snake hit itself
+    state.snake.checkCollision(gameBoard: state.gameBoard) ? {endGame()} : null;
+    draw();
+    if (state.currentDirection != state.upcomingDirection) {
+      emit(state.copyWith(currentDirection: state.upcomingDirection));
     }
   }
 
