@@ -62,17 +62,31 @@ class _LeaderboardViewBodyState extends State<LeaderboardViewBody>
             },
           ),
         ],
-        bottom: TabBar(
-          controller: _tabController,
-          tabs: GameValues.difficultyNames
-              .map((difficulty) => Tab(
-                    child: Text(difficulty),
-                  ))
-              .toList(),
-          onTap: (index) {
-            final difficulty = GameValues.difficultyNames[index];
-            LeaderboardCubit.get(context).setDifficulty(difficulty);
-          },
+        bottom: PreferredSize(
+          preferredSize: const Size.fromHeight(48),
+          child: Container(
+            alignment: Alignment.centerLeft,
+            child: TabBar(
+              controller: _tabController,
+              isScrollable: true, // Make tabs scrollable
+              tabAlignment: TabAlignment.center,
+              labelPadding: const EdgeInsets.symmetric(horizontal: 16.0),
+              tabs: GameValues.difficultyNames
+                  .map((difficulty) => Tab(
+                child: Text(
+                  difficulty,
+                  style: const TextStyle(
+                    overflow: TextOverflow.ellipsis,
+                  ),
+                ),
+              ))
+                  .toList(),
+              onTap: (index) {
+                final difficulty = GameValues.difficultyNames[index];
+                LeaderboardCubit.get(context).setDifficulty(difficulty);
+              },
+            ),
+          ),
         ),
       ),
       body: Column(
@@ -138,9 +152,9 @@ class _LeaderboardViewBodyState extends State<LeaderboardViewBody>
                   children: [
                     Text(
                       lastUpdated != null
-                          ? 'Last updated: ${DateFormat('MMM d, yyyy HH:mm').format(lastUpdated)}'
-                          : 'Never updated',
-                      style: Theme.of(context).textTheme.bodySmall,
+                          ? '${AppLocalization.lastUpdated} ${DateFormat('MMM d, yyyy HH:mm').format(lastUpdated)}'
+                          : AppLocalization.neverUpdated,
+                      style: TextStyle(color: Theme.of(context).colorScheme.primary, fontSize: 12),
                     ),
                   ],
                 ),

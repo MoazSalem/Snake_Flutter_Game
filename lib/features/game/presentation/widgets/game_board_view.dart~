@@ -47,7 +47,7 @@ class _GameBoardViewState extends State<GameBoardView> {
         itemBuilder: (BuildContext context, int index) {
           return Padding(
               padding: EdgeInsets.all(
-                  c.state.gameBoard.height / c.state.gameBoard.width),
+                  c.state.gameBoard.width / c.state.gameBoard.height),
               child: GamePoint(gameBoard: c.state.gameBoard, index: index));
         },
         gridDelegate: SliverGridDelegateWithFixedCrossAxisCount(

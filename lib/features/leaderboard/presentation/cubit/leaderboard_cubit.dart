@@ -34,8 +34,17 @@ class LeaderboardCubit extends Cubit<LeaderboardState> {
     final Map<String, Timestamp> cachedTimestamps = {};
 
     for (var difficulty in GameValues.difficultyNames) {
-      final List<LeaderboardItem> difficultyList = _leaderboardBox
-          .get('${difficulty}List', defaultValue: <LeaderboardItem>[]);
+      // Get the list with proper cast
+      final dynamic rawList = _leaderboardBox.get('${difficulty}List', defaultValue: <LeaderboardItem>[]);
+      List<LeaderboardItem> difficultyList = [];
+
+      if (rawList is List) {
+        // Cast each item to LeaderboardItem
+        difficultyList = List<LeaderboardItem>.from(
+            rawList.whereType<LeaderboardItem>()
+        );
+      }
+
       cachedLeaderboard[difficulty] = difficultyList;
 
       // Load timestamp for each difficulty level

@@ -23,4 +23,7 @@ class AppLocalization{
   static const String saveScore = "Save Score";
   static const String addToLeaderboard = "Add To Leaderboard";
   static const String enterYourName = "Enter Your Name";
+  static const String lastUpdated = "Last Updated:";
+  static const String neverUpdated = "Never updated";
+
 }
