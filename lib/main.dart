@@ -6,6 +6,8 @@ import 'package:snake/core/utils/routes.dart';
 import 'package:snake/core/utils/initialization_service.dart';
 import 'package:snake/features/options/presentation/cubit/options_cubit.dart';
 
+import 'features/leaderboard/presentation/cubit/leaderboard_cubit.dart';
+
 void main() async {
   WidgetsFlutterBinding.ensureInitialized();
   await initializeServices();
@@ -17,8 +19,15 @@ class MyApp extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return BlocProvider<OptionsCubit>(
-      create: (context) => OptionsCubit()..getSettings(),
+    return MultiBlocProvider(
+      providers: [
+        BlocProvider<OptionsCubit>(
+          create: (context) => OptionsCubit()..getSettings(),
+        ),
+        BlocProvider<LeaderboardCubit>(
+          create: (context) => LeaderboardCubit()..refreshLeaderboard(),
+        ),
+      ],
       child: MaterialApp(
           title: AppLocalization.appTitle,
           debugShowCheckedModeBanner: false,

@@ -60,40 +60,37 @@ saveScore(BuildContext context) {
             },
           ),
           actions: [
-            BlocProvider(
-              create: (context) => LeaderboardCubit(),
-              child: BlocBuilder<LeaderboardCubit, LeaderboardState>(
-                builder: (context, state) {
-                  return TextButton(
-                      onPressed: () {
-                        BlocProvider.of<LeaderboardCubit>(context).addScore(
-                            newItem: LeaderboardItem(
-                                name: _controller.text,
-                                difficulty: GameValues.difficultyNames[getIt
-                                    .get<GameCubit>()
-                                    .state
-                                    .difficultyIndex],
-                                score: getIt.get<GameCubit>().state.score,
-                                width: getIt
-                                    .get<GameCubit>()
-                                    .state
-                                    .gameBoard
-                                    .width,
-                                height: getIt
-                                    .get<GameCubit>()
-                                    .state
-                                    .gameBoard
-                                    .height));
-                        // After the score is added, navigate back
-                        if (context.mounted) {
-                          // Check if context is still valid
-                          Navigator.popUntil(context,
-                              ModalRoute.withName(AppRoutes.difficultyScreen));
-                        }
-                      },
-                      child: const Text(AppLocalization.save));
-                },
-              ),
+            BlocBuilder<LeaderboardCubit, LeaderboardState>(
+              builder: (context, state) {
+                return TextButton(
+                    onPressed: () {
+                      BlocProvider.of<LeaderboardCubit>(context).addScore(
+                          newItem: LeaderboardItem(
+                              name: _controller.text,
+                              difficulty: GameValues.difficultyNames[getIt
+                                  .get<GameCubit>()
+                                  .state
+                                  .difficultyIndex],
+                              score: getIt.get<GameCubit>().state.score,
+                              width: getIt
+                                  .get<GameCubit>()
+                                  .state
+                                  .gameBoard
+                                  .width,
+                              height: getIt
+                                  .get<GameCubit>()
+                                  .state
+                                  .gameBoard
+                                  .height));
+                      // After the score is added, navigate back
+                      if (context.mounted) {
+                        // Check if context is still valid
+                        Navigator.popUntil(context,
+                            ModalRoute.withName(AppRoutes.difficultyScreen));
+                      }
+                    },
+                    child: const Text(AppLocalization.save));
+              },
             ),
           ],
         );

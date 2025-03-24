@@ -24,7 +24,6 @@ class _LeaderboardViewBodyState extends State<LeaderboardViewBody>
     super.initState();
     _tabController =
         TabController(length: GameValues.difficultyNames.length, vsync: this);
-    LeaderboardCubit.get(context).refreshLeaderboard();
 
     // Listen to tab changes and update the cubit's state
     _tabController.addListener(() {
@@ -73,13 +72,13 @@ class _LeaderboardViewBodyState extends State<LeaderboardViewBody>
               labelPadding: const EdgeInsets.symmetric(horizontal: 16.0),
               tabs: GameValues.difficultyNames
                   .map((difficulty) => Tab(
-                child: Text(
-                  difficulty,
-                  style: const TextStyle(
-                    overflow: TextOverflow.ellipsis,
-                  ),
-                ),
-              ))
+                        child: Text(
+                          difficulty,
+                          style: const TextStyle(
+                            overflow: TextOverflow.ellipsis,
+                          ),
+                        ),
+                      ))
                   .toList(),
               onTap: (index) {
                 final difficulty = GameValues.difficultyNames[index];
@@ -154,7 +153,9 @@ class _LeaderboardViewBodyState extends State<LeaderboardViewBody>
                       lastUpdated != null
                           ? '${AppLocalization.lastUpdated} ${DateFormat('MMM d, yyyy HH:mm').format(lastUpdated)}'
                           : AppLocalization.neverUpdated,
-                      style: TextStyle(color: Theme.of(context).colorScheme.primary, fontSize: 12),
+                      style: TextStyle(
+                          color: Theme.of(context).colorScheme.primary,
+                          fontSize: 12),
                     ),
                   ],
                 ),

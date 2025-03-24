@@ -70,21 +70,21 @@ class GameCubit extends Cubit<GameState> {
       _gameLoopTimer.cancel();
       return;
     }
+    // move the snake
+    state.snake
+        .move(direction: state.currentDirection, gameBoard: state.gameBoard);
+    // check if the snake hit itself
+    state.snake.checkCollision(gameBoard: state.gameBoard) ? {endGame()} : null;
+    // check if the snake ate the food
+    state.food.checkEaten(state.snake.headPoint)
+        ? {foodEaten(), emit(state)}
+        : null;
     // check if the special food counter is over
     checkCounter();
     // Something fun happens when you reach the high score
     checkHighScore();
     // check if the snake ate the golden apple
     isGoldenEaten();
-    // move the snake
-    state.snake
-        .move(direction: state.currentDirection, gameBoard: state.gameBoard);
-    // check if the snake ate the food
-    state.food.checkEaten(state.snake.headPoint)
-        ? {foodEaten(), emit(state)}
-        : null;
-    // check if the snake hit itself
-    state.snake.checkCollision(gameBoard: state.gameBoard) ? {endGame()} : null;
     draw();
     if (state.currentDirection != state.upcomingDirection) {
       emit(state.copyWith(currentDirection: state.upcomingDirection));

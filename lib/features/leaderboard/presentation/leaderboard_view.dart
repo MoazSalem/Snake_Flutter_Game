@@ -8,8 +8,6 @@ class LeaderboardView extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return BlocProvider<LeaderboardCubit>(
-        create: (context) => LeaderboardCubit(),
-        child: const LeaderboardViewBody());
+    return const LeaderboardViewBody();
   }
 }
