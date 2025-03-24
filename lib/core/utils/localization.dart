@@ -16,4 +16,11 @@ class AppLocalization{
   static const String reDefault = "Reset to Default";
   static const String noRecords = "No Records Yet";
   static const String score = "Score: ";
+  static const String gameOver = "Game Over";
+  static const String hitText = "You Hit Yourself!";
+  static const String yourScore = "Your Score:";
+  static const String exit = "Exit";
+  static const String saveScore = "Save Score";
+  static const String addToLeaderboard = "Add To Leaderboard";
+  static const String enterYourName = "Enter Your Name";
 }

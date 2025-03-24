@@ -24,4 +24,22 @@ class LeaderboardItem extends HiveObject {
       required this.width,
       required this.height,
       this.uploaded = 0});
+
+  LeaderboardItem copyWith({
+    String? name,
+    String? difficulty,
+    int? score,
+    int? width,
+    int? height,
+    int? uploaded,
+  }) {
+    return LeaderboardItem(
+      name: name ?? this.name,
+      difficulty: difficulty ?? this.difficulty,
+      score: score ?? this.score,
+      width: width ?? this.width,
+      height: height ?? this.height,
+      uploaded: uploaded ?? this.uploaded,
+    );
+  }
 }

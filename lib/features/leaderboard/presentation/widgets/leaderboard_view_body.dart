@@ -1,12 +1,12 @@
-import 'package:animated_segmented_tab_control/animated_segmented_tab_control.dart';
 import 'package:flutter/material.dart';
-import 'package:hive/hive.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:intl/intl.dart';
 import 'package:snake/core/utils/app_sizes.dart';
 import 'package:snake/core/utils/constants.dart';
 import 'package:snake/core/utils/localization.dart';
-import 'leaderboard_tile.dart';
+import 'package:snake/features/leaderboard/presentation/cubit/leaderboard_cubit.dart';
 
-late TabController _controller;
+import 'leaderboard_list.dart';
 
 class LeaderboardViewBody extends StatefulWidget {
   const LeaderboardViewBody({super.key});
@@ -16,19 +16,28 @@ class LeaderboardViewBody extends StatefulWidget {
 }
 
 class _LeaderboardViewBodyState extends State<LeaderboardViewBody>
-    with TickerProviderStateMixin {
+    with SingleTickerProviderStateMixin {
+  late TabController _tabController;
+
   @override
   void initState() {
     super.initState();
-    _controller = TabController(length: 5, vsync: this);
-    _controller.addListener(() {
-      setState(() {});
+    _tabController =
+        TabController(length: GameValues.difficultyNames.length, vsync: this);
+    LeaderboardCubit.get(context).refreshLeaderboard();
+
+    // Listen to tab changes and update the cubit's state
+    _tabController.addListener(() {
+      if (!_tabController.indexIsChanging) {
+        final difficulty = GameValues.difficultyNames[_tabController.index];
+        LeaderboardCubit.get(context).setDifficulty(difficulty);
+      }
     });
   }
 
   @override
   void dispose() {
-    _controller.dispose();
+    _tabController.dispose();
     super.dispose();
   }
 
@@ -36,64 +45,108 @@ class _LeaderboardViewBodyState extends State<LeaderboardViewBody>
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-          title: const Text(AppLocalization.leaderScreenTitle),
-          centerTitle: true,
-          toolbarHeight: AppSizes.appBarSize),
-      body: ListView(
+        title: const Text(AppLocalization.leaderScreenTitle),
+        actions: [
+          // Refresh button
+          BlocBuilder<LeaderboardCubit, LeaderboardState>(
+            buildWhen: (previous, current) =>
+                previous.isLoading != current.isLoading,
+            builder: (context, state) {
+              return IconButton(
+                icon: const Icon(Icons.refresh),
+                onPressed: state.isLoading
+                    ? null
+                    : () => LeaderboardCubit.get(context)
+                        .refreshLeaderboard(forceRefresh: true),
+              );
+            },
+          ),
+        ],
+        bottom: TabBar(
+          controller: _tabController,
+          tabs: GameValues.difficultyNames
+              .map((difficulty) => Tab(
+                    child: Text(difficulty),
+                  ))
+              .toList(),
+          onTap: (index) {
+            final difficulty = GameValues.difficultyNames[index];
+            LeaderboardCubit.get(context).setDifficulty(difficulty);
+          },
+        ),
+      ),
+      body: Column(
         children: [
+          // Sync tab controller with state's currentDifficulty
+          BlocListener<LeaderboardCubit, LeaderboardState>(
+            listenWhen: (previous, current) =>
+                previous.currentDifficulty != current.currentDifficulty,
+            listener: (context, state) {
+              final index =
+                  GameValues.difficultyNames.indexOf(state.currentDifficulty);
+              if (index != -1 && index != _tabController.index) {
+                _tabController.animateTo(index);
+              }
+            },
+            child: const SizedBox.shrink(),
+          ),
+
+          // Loading indicator
           Padding(
-            padding:
-                const EdgeInsets.symmetric(horizontal: AppSizes.smallerPadding),
-            child: SegmentedTabControl(
-              controller: _controller,
-              textStyle: const TextStyle(fontSize: AppSizes.smallerPadding),
-              barDecoration:
-                  BoxDecoration(color: Theme.of(context).colorScheme.surface),
-              indicatorDecoration:
-                  BoxDecoration(color: Theme.of(context).colorScheme.primary),
-              tabTextColor: Colors.grey,
-              selectedTabTextColor: Theme.of(context).colorScheme.onPrimary,
-              height: AppSizes.leaderboardTabHeight,
-              tabs: [
-                SegmentTab(label: GameValues.difficultyNames[0], flex: 2),
-                SegmentTab(label: GameValues.difficultyNames[1], flex: 2),
-                SegmentTab(label: GameValues.difficultyNames[2], flex: 2),
-                SegmentTab(label: GameValues.difficultyNames[3], flex: 3),
-                SegmentTab(label: GameValues.difficultyNames[4], flex: 3),
-              ],
+            padding: const EdgeInsets.only(top: 8.0, bottom: 4),
+            child: BlocBuilder<LeaderboardCubit, LeaderboardState>(
+              buildWhen: (previous, current) =>
+                  previous.isLoading != current.isLoading,
+              builder: (context, state) {
+                if (state.isLoading) {
+                  return const LinearProgressIndicator();
+                }
+                return const SizedBox.shrink();
+              },
             ),
           ),
-          (Hive.box('leaderBoardBox').get(
-                          "${GameValues.difficultyNames[_controller.index]}List") !=
-                      null &&
-                  Hive.box('leaderBoardBox')
-                      .get(
-                          "${GameValues.difficultyNames[_controller.index]}List")
-                      .isNotEmpty)
-              ? ListView.builder(
-                  shrinkWrap: true,
-                  itemCount: Hive.box('leaderBoardBox')
-                      .get(
-                          "${GameValues.difficultyNames[_controller.index]}List")!
-                      .length,
-                  itemBuilder: (context, index) {
-                    return LeaderboardTile(
-                        item: Hive.box('leaderBoardBox').get(
-                                "${GameValues.difficultyNames[_controller.index]}List")[
-                            index],
-                        position: index + 1);
-                  })
-              : Column(
-                  mainAxisAlignment: MainAxisAlignment.center,
+
+          // Leaderboard content
+          Expanded(
+            child: BlocBuilder<LeaderboardCubit, LeaderboardState>(
+              buildWhen: (previous, current) =>
+                  previous.leaderboard != current.leaderboard ||
+                  previous.currentDifficulty != current.currentDifficulty,
+              builder: (context, state) {
+                final leaderboardItems =
+                    LeaderboardCubit.get(context).getCurrentLeaderboard();
+                if (leaderboardItems.isEmpty) {
+                  return Center(
+                    child: Text(AppLocalization.noRecords),
+                  );
+                }
+
+                return LeaderboardList(leaderboardItems: leaderboardItems);
+              },
+            ),
+          ),
+          // Last updated time
+          BlocBuilder<LeaderboardCubit, LeaderboardState>(
+            buildWhen: (previous, current) =>
+                previous.lastUpdated != current.lastUpdated,
+            builder: (context, state) {
+              final lastUpdated = state.lastUpdated;
+              return Padding(
+                padding: EdgeInsets.all(AppSizes.topPadding),
+                child: Row(
+                  mainAxisAlignment: MainAxisAlignment.end,
                   children: [
-                    SizedBox(
-                        height: MediaQuery.sizeOf(context).height * 0.8,
-                        child: const Center(
-                            child: Text(AppLocalization.noRecords,
-                                style:
-                                    TextStyle(fontSize: AppSizes.titleSize)))),
+                    Text(
+                      lastUpdated != null
+                          ? 'Last updated: ${DateFormat('MMM d, yyyy HH:mm').format(lastUpdated)}'
+                          : 'Never updated',
+                      style: Theme.of(context).textTheme.bodySmall,
+                    ),
                   ],
                 ),
+              );
+            },
+          ),
         ],
       ),
     );

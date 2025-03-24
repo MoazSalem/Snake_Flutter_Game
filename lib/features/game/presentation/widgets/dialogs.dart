@@ -1,8 +1,9 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
-import 'package:hive/hive.dart';
 import 'package:snake/core/models/leaderboard_item.dart';
 import 'package:snake/core/utils/assets.dart';
+import 'package:snake/core/utils/localization.dart';
+import 'package:snake/core/utils/routes.dart';
 import 'package:snake/core/utils/service_locator.dart';
 import 'package:snake/core/utils/constants.dart';
 import 'package:snake/features/leaderboard/presentation/cubit/leaderboard_cubit.dart';
@@ -17,27 +18,27 @@ gameOver(BuildContext context) {
       context: context,
       builder: (context) {
         return AlertDialog(
-          title: const Text('Game Over'),
+          title: const Text(AppLocalization.gameOver),
           content: Column(
             mainAxisSize: MainAxisSize.min,
             children: [
-              const Text('You Hit Yourself!'),
-              Text('Your Score: ${getIt.get<GameCubit>().state.score}'),
+              const Text(AppLocalization.hitText),
+              Text(
+                  '${AppLocalization.yourScore} ${getIt.get<GameCubit>().state.score}'),
             ],
           ),
           actions: [
             TextButton(
                 onPressed: () {
-                  Navigator.pop(context);
-                  Navigator.pop(context);
+                  Navigator.popUntil(
+                      context, ModalRoute.withName(AppRoutes.difficultyScreen));
                 },
-                child: const Text('Exit')),
+                child: const Text(AppLocalization.exit)),
             TextButton(
                 onPressed: () {
-                  Navigator.pop(context);
                   saveScore(context);
                 },
-                child: const Text('Save Score')),
+                child: const Text(AppLocalization.saveScore)),
           ],
         );
       });
@@ -49,10 +50,11 @@ saveScore(BuildContext context) {
       context: context,
       builder: (context) {
         return AlertDialog(
-          title: const Text('Add To Leaderboard'),
+          title: const Text(AppLocalization.addToLeaderboard),
           content: TextField(
             controller: _controller,
-            decoration: const InputDecoration(hintText: 'Enter Your Name'),
+            decoration:
+                const InputDecoration(hintText: AppLocalization.enterYourName),
             onChanged: (value) {
               _controller.text = value;
             },
@@ -65,7 +67,7 @@ saveScore(BuildContext context) {
                   return TextButton(
                       onPressed: () {
                         BlocProvider.of<LeaderboardCubit>(context)
-                            .addToLeaderboard(
+                            .addScore(
                                 newItem: LeaderboardItem(
                                     name: _controller.text,
                                     difficulty: GameValues.difficultyNames[getIt
@@ -73,23 +75,22 @@ saveScore(BuildContext context) {
                                         .state
                                         .difficultyIndex],
                                     score: getIt.get<GameCubit>().state.score,
-                                    width: Hive.box('optionsBox').get('boardWidth',
-                                        defaultValue:
-                                            (getIt
-                                                        .get<Size>()
-                                                        .width *
-                                                    0.036)
-                                                .toInt()),
-                                    height: Hive.box('optionsBox').get(
-                                        'boardHeight',
-                                        defaultValue:
-                                            ((getIt.get<Size>().width * 0.036) *
-                                                    1.7)
-                                                .toInt())));
-                        Navigator.pop(context);
-                        Navigator.pop(context);
+                                    width: getIt
+                                        .get<GameCubit>()
+                                        .state
+                                        .gameBoard
+                                        .width,
+                                    height: getIt
+                                        .get<GameCubit>()
+                                        .state
+                                        .gameBoard
+                                        .height))
+                            .then((_) {
+                          Navigator.popUntil(context,
+                              ModalRoute.withName(AppRoutes.difficultyScreen));
+                        });
                       },
-                      child: const Text('Save'));
+                      child: const Text(AppLocalization.save));
                 },
               ),
             ),
